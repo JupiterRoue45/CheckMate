@@ -1,6 +1,0 @@
-@CheckMate_HostAddress = http://localhost:5216
-
-GET {{CheckMate_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
