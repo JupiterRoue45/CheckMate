@@ -10,7 +10,10 @@ namespace CheckMate.Domain.Entities
         [Key]
         public int AddressId { get; set; }
 
-        public int? AddresNumber { get; set; }
+        public int? AddressNumber { get; set; }
+
+        [Required]
+        public string StreetName { get; set; }
 
         [Required]
         public string AddressLabel { get; set; }

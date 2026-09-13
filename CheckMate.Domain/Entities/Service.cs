@@ -12,10 +12,11 @@ namespace CheckMate.Domain.Entities
 
         [Required]
         public string ServiceName { get; set; } 
+
         public string? ServiceDescription { get; set; }
 
         [Required]
-        public decimal ServicePrice { get; set; }
+        public decimal ServiceUnitPrice { get; set; }
 
         [Required]
         public bool IsAvailable { get; set; }

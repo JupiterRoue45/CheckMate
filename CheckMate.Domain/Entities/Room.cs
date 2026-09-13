@@ -16,8 +16,11 @@ namespace CheckMate.Domain.Entities
 
         [Required]
         public int RoomTypeId { get; set; }
+
         public RoomType RoomType { get; set; }
+
         public int? Floor { get; set; }
+
         public Decimal? Area { get; set; }
 
         [Required]

@@ -9,9 +9,11 @@ namespace CheckMate.Domain.Entities
     {
         [Required]
         public int ReservationRoomId { get; set; }
+        public ReservationRoom ReservationRoom { get; set; }
 
         [Required]
         public int ServiceId { get; set; }
+        public Service Service { get; set; }
 
         [Required]
         public int Quantity { get; set; }

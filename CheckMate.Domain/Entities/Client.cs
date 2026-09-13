@@ -13,8 +13,8 @@ namespace CheckMate.Domain.Entities
         [Required]
         public DateTime CreationAt { get; set; }
 
-        [Required]
-        public int AddressId { get; set; }
-        public Address Address { get; set; }
+        public int? AddressId { get; set; }
+
+        public Address? Address { get; set; }
     }
 }

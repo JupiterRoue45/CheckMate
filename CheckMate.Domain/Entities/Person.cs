@@ -12,11 +12,13 @@ namespace CheckMate.Domain.Entities
 
         [Required]
         public string LastName { get; set; }
+
         public DateOnly? BirthDate { get; set; }
 
         public string? PhoneAreaCode { get; set; }
 
         public int? PhoneNumber { get; set; }
+
         public string? Email { get; set; }
     }
 }

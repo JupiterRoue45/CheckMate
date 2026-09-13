@@ -18,11 +18,10 @@ namespace CheckMate.Domain.Entities
 
         [Required]
         public int OngoingInvoiceId { get; set; }
-
         public OngoingInvoice OngoingInvoice { get; set; }
 
+        [Required]
         public int PaymentMethodId { get; set; }
-
         public PaymentMethod PaymentMethod { get; set; }
 
     }

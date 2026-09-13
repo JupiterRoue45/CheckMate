@@ -12,7 +12,6 @@ namespace CheckMate.Domain.Entities
 
         [Required]
         public int RoomId { get; set; }
-
         public Room Room { get; set; }
 
         [Required]
