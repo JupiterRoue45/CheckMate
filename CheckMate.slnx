@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="CheckMate.API/CheckMate.API.csproj" />
   <Project Path="CheckMate.Domain/CheckMate.Domain.csproj" />
+  <Project Path="CheckMate.Infrastructure/CheckMate.Infrastructure.csproj" Id="72316d86-77e7-4c93-af0a-7be147c8f417" />
 </Solution>
