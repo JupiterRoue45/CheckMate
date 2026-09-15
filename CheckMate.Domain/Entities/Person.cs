@@ -7,18 +7,18 @@ namespace CheckMate.Domain.Entities
 {
     public class Person : Client
     {
-        [Required]
         public string FirstName { get; set; }
 
-        [Required]
         public string LastName { get; set; }
 
         public DateOnly? BirthDate { get; set; }
 
         public string? PhoneAreaCode { get; set; }
 
-        public int? PhoneNumber { get; set; }
+        [DataType(DataType.PhoneNumber)]
+        public string? PhoneNumber { get; set; }
 
+        [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
     }
 }

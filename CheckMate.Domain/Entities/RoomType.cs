@@ -10,18 +10,14 @@ namespace CheckMate.Domain.Entities
     /// </summary>
     public class RoomType
     {
-        [Key]
         public int RoomTypeId { get; set; }
 
-        [Required]
         public string RoomTypeName { get; set; }
 
         public string? Description { get; set; }
 
-        [Required]
         public int Rank { get; set; }
 
-        [Required]
         public int MaxOccupancy { get; set; }
     }
 }
