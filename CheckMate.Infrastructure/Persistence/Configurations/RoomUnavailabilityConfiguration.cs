@@ -11,7 +11,12 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<RoomUnavailability> builder)
         {
-            builder.ToTable("RoomUnavailabilities");
+            builder.ToTable("RoomUnavailabilities", table =>
+            {
+                table.HasCheckConstraint(
+                    "CK_RoomUnavalabilities_EndingDateSupStartingDate",
+                    "[EndingDate] > [StartingDate]");
+            });
 
             builder.HasKey(ru => ru.RoomUnavailabilityId);
 

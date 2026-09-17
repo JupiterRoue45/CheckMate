@@ -15,12 +15,12 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
             {
                 table.HasCheckConstraint(
                     "CK_Rank_SuperiorToZero",
-                    "[Rank] => rt.Rank > 0"
+                    "[Rank] > 0"
                 );
 
                 table.HasCheckConstraint(
                     "CK_MaxOccupancy_SuperiorToZero",
-                    "[MaxOccupancy] => rt.MaxOccupancy > 0"
+                    "[MaxOccupancy] > 0"
                 );
             });
 
@@ -28,12 +28,13 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
 
             builder.Property(rt => rt.RoomTypeName)
                 .IsRequired()
-                .HasMaxLength(20);
-
+                .HasMaxLength(50);
             builder.HasIndex(rt => rt.RoomTypeName)
                 .IsUnique();
 
-            builder.Property(rt => rt.Description).HasDefaultValue(null);
+            builder.Property(rt => rt.Description)
+                .HasDefaultValue(null)
+                .IsRequired(false);
 
             builder.Property(rt => rt.Rank)
                 .IsRequired();

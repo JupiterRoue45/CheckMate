@@ -18,6 +18,6 @@ namespace CheckMate.Domain.Entities
 
         public decimal NewPrice { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
     }
 }

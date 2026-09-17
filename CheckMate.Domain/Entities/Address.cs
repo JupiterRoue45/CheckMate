@@ -9,7 +9,7 @@ namespace CheckMate.Domain.Entities
     {
         public int AddressId { get; set; }
 
-        public int? AddressNumber { get; set; }
+        public string? AddressNumber { get; set; }
 
         public string StreetName { get; set; }
 

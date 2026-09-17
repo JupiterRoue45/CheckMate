@@ -12,9 +12,9 @@ namespace CheckMate.Domain.Entities
         public int RoomId { get; set; }
         public Room Room { get; set; }
 
-        public DateTime StartingDate { get; set; }
+        public DateOnly StartingDate { get; set; }
 
-        public DateTime EndingDate { get; set; }
+        public DateOnly EndingDate { get; set; }
 
         public string Reason { get; set; }
 

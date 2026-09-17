@@ -14,13 +14,13 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
             builder.ToTable("Companies");
 
             builder.Property(c => c.CompanyName)
-                .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(100)
+                .IsRequired();
 
             builder.Property(c => c.TVA)
-                .IsRequired(false)
-                .HasMaxLength(20);
-                
+                .HasMaxLength(30)
+                .IsRequired(false);
+
         }
     }
 }

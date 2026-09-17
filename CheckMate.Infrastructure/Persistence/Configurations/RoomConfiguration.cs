@@ -26,11 +26,13 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(r => r.Floor).
-                HasDefaultValue(null);
+                HasDefaultValue(null)
+                .IsRequired(false);
 
             builder.Property(r => r.Area)
                 .HasColumnType("decimal(6,2)")
-                .HasDefaultValue(null);
+                .HasDefaultValue(null)
+                .IsRequired(false);
 
             builder.Property(r => r.RoomStatus)
                    .HasConversion<string>()

@@ -30,8 +30,8 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                 .HasMaxLength(100);
 
             builder.Property(u => u.CreatedAt)
-                .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("GETUTCDATE()")
+                .IsRequired();
 
             builder.Property(u => u.IsActive)
                 .IsRequired()

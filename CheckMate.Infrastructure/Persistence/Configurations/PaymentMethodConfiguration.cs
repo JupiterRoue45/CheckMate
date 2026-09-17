@@ -23,7 +23,8 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                 .IsUnique();
 
             builder.Property(pm => pm.PaymentMethodDescription)
-                .HasMaxLength(200);
+                .HasMaxLength(200)
+                .IsRequired(false);
 
             builder.Property(pm => pm.CreatedAt)
                 .HasDefaultValueSql("GETUTCDATE()")

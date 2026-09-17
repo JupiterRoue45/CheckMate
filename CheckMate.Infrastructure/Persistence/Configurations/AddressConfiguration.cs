@@ -16,32 +16,34 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
             builder.HasKey(a => a.AddressId);
 
             builder.Property(a => a.AddressNumber)
+                .HasMaxLength(10)
                 .IsRequired(false);
 
             builder.Property(a => a.StreetName)
-                .IsRequired()
-                .HasMaxLength(100);
-
-            builder.Property(a => a.City)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            builder.Property(a => a.State)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            builder.Property(a => a.ZipCode)
-                .IsRequired()
-                .HasMaxLength(20);
+                .HasMaxLength(100)
+                .IsRequired();
 
             builder.Property(a => a.AddressLabel)
-                .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .IsRequired();
+
+            builder.Property(a => a.City)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            builder.Property(a => a.State)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            builder.Property(a => a.ZipCode)
+                .HasMaxLength(20)
+                .IsRequired();
 
             builder.HasOne(a => a.Country)
                 .WithMany()
                 .HasForeignKey(a => a.CountryId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
         }
     }
 }

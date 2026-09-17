@@ -1,4 +1,5 @@
 ﻿using CheckMate.Domain.Entities;
+using CheckMate.Domain.Enums;
 using CheckMate.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -15,12 +16,8 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
             builder.ToTable("Reservations", table =>
             {
                 table.HasCheckConstraint(
-                    "CK_Reservations_ArrivalDate_DepartureDate",
-                    "[ArrivalDate] < [DepartureDate]");
-
-                table.HasCheckConstraint(
-                    "CK_Reservations_NumberOfAdults",
-                    "[NumberOfAdults] > 0");
+                    "CK_Reservations_DepartureDateSupArrivalDate",
+                    "[DepartureDate] > [ArrivalDate]");
             });
 
             builder.HasKey(r => r.ReservationId);
@@ -31,20 +28,20 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
             builder.Property(r => r.DepartureDate)
                 .IsRequired();
 
-            builder.Property(r => r.NumberOfAdults)
+            builder.Property(r => r.ReservationStatus)
+                .HasDefaultValue(ReservationStatus.CONFIRMED)
+                .HasConversion<string>()
                 .IsRequired();
-
-            builder.Property(r => r.NumberOfChildren)
-                .IsRequired()
-                .HasDefaultValue(0);
-
-            builder.Property(r => r.NumberOfInfants)
-                .IsRequired()
-                .HasDefaultValue(0);
 
             builder.HasOne(r => r.ReservationType)
                 .WithMany()
                 .HasForeignKey(r => r.ReservationTypeId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
+
+            builder.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
 
@@ -54,10 +51,8 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
 
-            builder.HasOne<User>()
-                .WithMany()
-                .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Restrict)
+            builder.Property(r => r.CreatedAt)
+                .HasDefaultValueSql("GETUTCDATE()")
                 .IsRequired();
 
         }

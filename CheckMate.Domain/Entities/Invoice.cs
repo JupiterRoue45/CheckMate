@@ -11,6 +11,8 @@ namespace CheckMate.Domain.Entities
 
         public DateTime InvoiceDate { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
+
+        public ICollection<OngoingInvoice> OngoingInvoices { get; set; } = [];
     }
 }

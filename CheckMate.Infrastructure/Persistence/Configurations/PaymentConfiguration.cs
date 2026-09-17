@@ -11,7 +11,12 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Payment> builder)
         {
-            builder.ToTable("Payments");
+            builder.ToTable("Payments", table =>
+            {
+                table.HasCheckConstraint(
+                    "CK_Payments_PositiveAmount",
+                    "[Amount] > 0.00");
+            });
 
             builder.HasKey(p => p.PaymentId);
 

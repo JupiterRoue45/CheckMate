@@ -13,12 +13,7 @@ namespace CheckMate.Domain.Entities
 
         public DateOnly? BirthDate { get; set; }
 
-        public string? PhoneAreaCode { get; set; }
+        public bool IsAdult { get; set; }
 
-        [DataType(DataType.PhoneNumber)]
-        public string? PhoneNumber { get; set; }
-
-        [DataType(DataType.EmailAddress)]
-        public string? Email { get; set; }
     }
 }

@@ -11,7 +11,12 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Service> builder)
         {
-            builder.ToTable("Services");
+            builder.ToTable("Services", table =>
+            {
+                table.HasCheckConstraint(
+                    "CK_Services_PositiveUnitPrice",
+                    "[ServiceUnitPrice] > 0.00");
+            });
 
             builder.HasKey(s => s.ServiceId);
 
@@ -30,8 +35,8 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                 .IsRequired();
 
             builder.Property(s => s.IsAvailable)
-                .IsRequired()
-                .HasDefaultValue(true);
+                .HasDefaultValue(true)
+                .IsRequired();
         }
     }
 }

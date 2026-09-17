@@ -23,11 +23,12 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
 
             builder.Property(r => r.Description)
                 .HasMaxLength(200)
-                .HasDefaultValue(null);
+                .HasDefaultValue(null)
+                .IsRequired(false);
 
             builder.Property(r => r.CreatedAt)
-                .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("GETUTCDATE()")
+                .IsRequired();
         }
     }
 }

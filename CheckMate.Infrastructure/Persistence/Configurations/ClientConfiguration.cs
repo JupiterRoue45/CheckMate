@@ -13,18 +13,35 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
         {
             builder.UseTptMappingStrategy();
 
-            builder.ToTable("Clients");
+            builder.ToTable("Clients", table =>
+            {
+                table.HasCheckConstraint(
+                    "CK_Clients_PhoneNumberRequireAreaCode",
+                    "PhoneNumber IS NULL OR PhoneAreaCode IS NOT NULL");
+            });
 
             builder.HasKey(c => c.ClientId);
 
             builder.Property(c => c.CreationAt)
-                .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("GETUTCDATE()")
+                .IsRequired();
 
             builder.HasOne(c => c.Address)
                 .WithMany()
                 .HasForeignKey(c => c.AddressId)
                 .OnDelete(DeleteBehavior.SetNull)
+                .IsRequired(false);
+
+            builder.Property(c => c.PhoneAreaCode)
+                .HasMaxLength(10)
+                .IsRequired(false);
+
+            builder.Property(c => c.PhoneNumber)
+                .HasMaxLength(20) 
+                .IsRequired(false);
+
+            builder.Property(c => c.Email)
+                .HasMaxLength(50)
                 .IsRequired(false);
         }
     }

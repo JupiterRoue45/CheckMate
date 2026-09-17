@@ -11,7 +11,12 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Occupant> builder)
         {
-            builder.ToTable("Occupants");
+            builder.ToTable("Occupants", table =>
+            {
+                table.HasCheckConstraint(
+                    "CK_Occupants_EndingDateNullOrSupStartingDate",
+                    "[EndingDate] IS NULL OR [EndingDate] > StartingDate");
+            });
 
             builder.HasKey(o => new { o.ReservationRoomId, o.PersonId });
 
@@ -24,7 +29,7 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
             builder.HasOne(o => o.Person)
                 .WithMany()
                 .HasForeignKey(o => o.PersonId)
-                .OnDelete(DeleteBehavior.Cascade)
+                .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
 
             builder.Property(o => o.StartingDate)

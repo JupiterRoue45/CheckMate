@@ -16,6 +16,10 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                 table.HasCheckConstraint(
                     "CK_DailyServices_Quantity",
                     "[Quantity] > 0");
+
+                table.HasCheckConstraint(
+                    "CK_DailyServices_PositiveUnitPrice",
+                    "[UnitPrice] > 0.00");
             });
 
             builder.HasKey(ds => new { ds.ReservationRoomId, ds.ServiceId });
@@ -29,11 +33,15 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
             builder.HasOne(ds => ds.Service)
                      .WithMany()
                      .HasForeignKey(ds => ds.ServiceId)
-                     .OnDelete(DeleteBehavior.Cascade)
+                     .OnDelete(DeleteBehavior.Restrict)
                      .IsRequired();
 
             builder.Property(ds => ds.Quantity)
                      .IsRequired();
+
+            builder.Property(ds => ds.UnitPrice)
+                .HasColumnType("decimal(10,2)")
+                .IsRequired();
         }
     }
 }

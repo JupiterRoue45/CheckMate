@@ -12,7 +12,16 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<InvoiceRowHistory> builder)
         {
-            builder.ToTable("InvoiceRowHistories");
+            builder.ToTable("InvoiceRowHistories", table =>
+            {
+                table.HasCheckConstraint(
+                    "CK_InvoiceRowHistories_OriginalPrice",
+                    "[OriginalPrice] > 0.00");
+
+                table.HasCheckConstraint(
+                    "CK_InvoiceRowHistories_NewPrice",
+                    "[NewPrice] > 0.00");
+            });
 
             builder.HasKey(ivh => ivh.InvoiceRowHistoryId);
 
@@ -27,11 +36,11 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                 .IsRequired();
 
             builder.Property(ivh => ivh.OriginalPrice)
-                .HasColumnType("decimal(8,2)")
+                .HasColumnType("decimal(10,2)")
                 .IsRequired();
 
             builder.Property(ivh => ivh.NewPrice)
-                .HasColumnType("decimal(8,2)")
+                .HasColumnType("decimal(10,2)")
                 .IsRequired();
 
             builder.HasOne<User>()

@@ -16,6 +16,10 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                 table.HasCheckConstraint(
                     "CK_InvoiceRows_Quantity",
                     "[Quantity] > 0");
+
+                table.HasCheckConstraint(
+                    "CK_InvoiceRows_PositiveUnitPrice",
+                    "[UnitPrice] > 0.00");
             });
 
             builder.HasKey(ir => ir.InvoiceRowId);
@@ -42,11 +46,11 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
             builder.HasOne(ir => ir.OngoingInvoice)
                 .WithMany()
                 .HasForeignKey(ir => ir.OngoingInvoiceId)
-                .OnDelete(DeleteBehavior.Restrict)
+                .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
 
             builder.Property(ir => ir.UnitPrice)
-                .HasColumnType("decimal(8,2)")
+                .HasColumnType("decimal(10,2)")
                 .IsRequired();
         }
     }

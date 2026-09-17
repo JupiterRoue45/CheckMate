@@ -16,7 +16,7 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
             builder.HasKey(oi => oi.OngoingInvoiceId);
 
             builder.HasOne(oi => oi.ReservationRoom)
-                .WithMany()
+                .WithMany(rr => rr.OngoingInvoices)
                 .HasForeignKey(oi => oi.ReservationRoomId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
@@ -26,9 +26,10 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                 .IsRequired();
 
             builder.HasOne(oi => oi.Invoice)
-                .WithMany()
+                .WithMany(i => i.OngoingInvoices)
                 .HasForeignKey(oi => oi.InvoiceNumber)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.SetNull)
+                .IsRequired(false);
         }
     }
 }

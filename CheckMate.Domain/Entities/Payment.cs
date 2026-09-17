@@ -13,11 +13,11 @@ namespace CheckMate.Domain.Entities
 
         public DateTime PaymentDate { get; set; }
 
-        public int OngoingInvoiceId { get; set; }
-        public OngoingInvoice OngoingInvoice { get; set; }
-
         public int PaymentMethodId { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
+
+        public int OngoingInvoiceId { get; set; }
+        public OngoingInvoice OngoingInvoice { get; set; }
 
     }
 }

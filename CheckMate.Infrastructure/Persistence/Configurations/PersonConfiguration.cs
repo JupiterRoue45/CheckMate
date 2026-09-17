@@ -11,35 +11,22 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Person> builder)
         {
-            builder.ToTable("Persons", table =>
-            {
-                table.HasCheckConstraint(
-                    "CK_Persons_PhoneNumberRequireAreaCode",
-                    "PhoneNumber IS NULL OR PhoneAreaCode IS NOT NULL");
-            });
+            builder.ToTable("Persons");
 
             builder.Property(p => p.FirstName)
-                .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .IsRequired();
 
             builder.Property(p => p.LastName)
-                .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .IsRequired();
 
             builder.Property(p => p.BirthDate)
                 .IsRequired(false);
 
-            builder.Property(p => p.PhoneAreaCode)
-                .IsRequired(false)
-                .HasMaxLength(10);
-
-            builder.Property(p => p.PhoneNumber)
-                .IsRequired(false)
-                .HasMaxLength(20);
-
-            builder.Property(p => p.Email)
-                .IsRequired(false)
-                .HasMaxLength(100);
+            builder.Property(p => p.IsAdult)
+                .HasDefaultValue(true)
+                .IsRequired();
 
         }
     }
