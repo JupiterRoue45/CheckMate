@@ -1,4 +1,5 @@
 ﻿using CheckMate.Domain.Entities;
+using CheckMate.Infrastructure.Persistence.SeedData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -23,7 +24,9 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
 
             builder.Property(c => c.PhoneDialCode)
                 .IsRequired()
-                .HasMaxLength(10);
+                .HasMaxLength(22);
+
+            builder.HasData(CountrySeedData.GetCountries());
         }
     }
 }
