@@ -1,6 +1,10 @@
+using CheckMate.Application.Interfaces.RepositoryInterfaces;
+using CheckMate.Application.Interfaces.ServiceInterfaces;
+using CheckMate.Application.Services;
 using CheckMate.Infrastructure.Identity;
 using CheckMate.Infrastructure.Persistence;
 using CheckMate.Infrastructure.Persistence.SeedData;
+using CheckMate.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +26,14 @@ builder.Services.
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+# region reporitories
+builder.Services.AddScoped<ICountryRepository, CountryRepository>();
+#endregion
+
+#region application
+builder.Services.AddScoped<ICountryService, CountryService>();
+#endregion
 
 var app = builder.Build();
 
