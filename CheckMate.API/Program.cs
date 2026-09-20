@@ -1,5 +1,7 @@
 using CheckMate.Infrastructure.Identity;
 using CheckMate.Infrastructure.Persistence;
+using CheckMate.Infrastructure.Persistence.SeedData;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +24,16 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+using(var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    await IdentityDataSeed.SeedAsync(
+        services.GetRequiredService<UserManager<User>>(),
+        services.GetRequiredService<RoleManager<Role>>(),
+        services.GetRequiredService<IConfiguration>());
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
