@@ -6,8 +6,11 @@ using CheckMate.Infrastructure.Persistence;
 using CheckMate.Infrastructure.Persistence.SeedData;
 using CheckMate.Infrastructure.Repositories.Implementations;
 using CheckMate.Infrastructure.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +51,31 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("JwtSettings"));
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.MapInboundClaims = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "",
+            ValidateAudience = true,
+            ValidAudience = "",
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String("")),
+            ClockSkew = TimeSpan.Zero,
+            NameClaimType = JwtRegisteredClaimNames.Name,
+            RoleClaimType = "role",
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
