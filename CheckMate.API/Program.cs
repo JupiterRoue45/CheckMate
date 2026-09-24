@@ -38,10 +38,12 @@ builder.Services.AddOpenApi();
 
 # region reporitories
 builder.Services.AddScoped<ICountryRepository, CountryRepository>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 #endregion
 
 #region application
 builder.Services.AddScoped<ICountryService, CountryService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 #endregion
 
 builder.Services.Configure<JwtSettings>(

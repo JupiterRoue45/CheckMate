@@ -1,10 +1,7 @@
 ﻿using CheckMate.Infrastructure.Configurations;
 using CheckMate.Infrastructure.Identity;
 using CheckMate.Infrastructure.Identity.Tokens;
-using CheckMate.Infrastructure.Persistence;
-using CheckMate.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -13,22 +10,28 @@ using System;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using CheckMate.Application.DTOs.Authentification;
+using CheckMate.Infrastructure.Repositories.Interfaces;
+using CheckMate.Application.Interfaces;
 
-namespace CheckMate.Infrastructure.Services.Implementations
+namespace CheckMate.Application.Services
 {
     public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
         private readonly JwtSettings jwtSettings;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
         public TokenService(
             IConfiguration configuration,
             UserManager<User> userManager,
-            IOptions<JwtSettings> options)
+            IOptions<JwtSettings> options,
+            IRefreshTokenRepository refreshTokenRepository)
         {
             _configuration = configuration;
             _userManager = userManager;
             jwtSettings = options.Value;
+            _refreshTokenRepository = refreshTokenRepository;
         }
         /// <summary>
         /// 
@@ -38,15 +41,8 @@ namespace CheckMate.Infrastructure.Services.Implementations
         /// <param name="jwtId"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<Tuple<string, string>> GenerateAccessTokenAsync(string UserId)
+        public async Task<AccessTokenGenerationDto> GenerateAccessTokenAsync(User user, IList<string> roles)
         {
-            // We verify if the user exists
-            User user = await _userManager.FindByIdAsync(UserId) ??
-                throw new Exception($"Unexistant user with the userId : {UserId}");
-
-            // We retrieve his roles
-            IEnumerable<string> roles = await _userManager.GetRolesAsync(user);
-
             // new JWT security token handler
             var tokenHandler = new JsonWebTokenHandler();
 
@@ -55,7 +51,7 @@ namespace CheckMate.Infrastructure.Services.Implementations
                 throw new Exception("Could not find the Jwt signing key.");
 
             // Convert it into bytes
-            byte[] keyBytes = Convert.FromBase64String(keyCoded); 
+            byte[] keyBytes = Convert.FromBase64String(keyCoded);
 
             // Create our symetric key
             var key = new SymmetricSecurityKey(keyBytes);
@@ -71,7 +67,7 @@ namespace CheckMate.Infrastructure.Services.Implementations
 
             List<Claim> claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, UserId),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
 
                 new Claim(JwtRegisteredClaimNames.Jti, jwtId),
 
@@ -82,13 +78,14 @@ namespace CheckMate.Infrastructure.Services.Implementations
             };
 
             claims.AddRange(
-                roles.Select(role => 
+                roles.Select(role =>
                 new Claim(ClaimTypes.Role, role)));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
             // Mandatory claims in the payload part
-            var tokenDescriptor = new SecurityTokenDescriptor { 
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddMinutes(accessTokenExpirationMinutes),
                 SigningCredentials = creds,
@@ -98,7 +95,12 @@ namespace CheckMate.Infrastructure.Services.Implementations
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return Tuple.Create(tokenHandler.CreateToken(token), jwtId);
+            return new AccessTokenGenerationDto
+            {
+                AccessToken = token,
+                JwtId = jwtId,
+                AccessTokenExpiryMinutes = accessTokenExpirationMinutes
+            };
         }
 
         public RefreshToken GenerateRefreshToken(string jwtId, string userId)
@@ -106,7 +108,7 @@ namespace CheckMate.Infrastructure.Services.Implementations
             var randomBytes = new byte[64];
 
             using var rng = RandomNumberGenerator.Create();
-                rng.GetBytes(randomBytes);
+            rng.GetBytes(randomBytes);
 
             var refreshTokenExpirationDays = jwtSettings.RefreshTokenExpirationDays;
 
@@ -124,6 +126,23 @@ namespace CheckMate.Infrastructure.Services.Implementations
 
                 RevokedAt = null
             };
+        }
+
+        public async Task<bool> RevokeRefreshToken(string token)
+        {
+            RefreshToken? refreshToken = await _refreshTokenRepository.GetRefreshToken(token);
+
+            if (refreshToken is null || refreshToken.IsRevoked)
+                return false;
+
+            await _refreshTokenRepository.Revoke(refreshToken);
+
+            return true;
+        }
+
+        public async Task SaveRefreshToken(RefreshToken refreshToken)
+        {
+            await _refreshTokenRepository.CreateToken(refreshToken);
         }
     }
 }

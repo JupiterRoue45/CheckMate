@@ -29,6 +29,5 @@ namespace CheckMate.Infrastructure.Identity.Tokens
         public string UserId { get; set; }
         public User User { get; set; }
 
-        public string? CreatedByIp { get; set; }
     }
 }

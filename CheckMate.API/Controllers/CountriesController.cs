@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CheckMate.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/countries")]
     [ApiController]
     public class CountriesController : ControllerBase
     {
@@ -19,9 +19,9 @@ namespace CheckMate.API.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IEnumerable<Country>> IndexAsync()
+        public async Task<ActionResult<IEnumerable<Country>>> IndexAsync()
         {
-            return await _countryService.GetAllCountries();
+            return Ok(await _countryService.GetAllCountries());
         }
     }
 }
