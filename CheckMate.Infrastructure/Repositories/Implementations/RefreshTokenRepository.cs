@@ -17,22 +17,22 @@ namespace CheckMate.Infrastructure.Repositories.Implementations
             _context = context;
         }
 
-        public async Task CreateToken(RefreshToken refreshToken)
+        public void CreateToken(RefreshToken refreshToken)
         {
             _context.RefreshTokens.Add(refreshToken);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<RefreshToken?> GetRefreshToken(string token)
         {
-            return await _context.RefreshTokens.FirstOrDefaultAsync(r => r.Token == token);
+            return await _context.RefreshTokens
+                .Include(r => r.User)
+                .FirstOrDefaultAsync(r => r.Token == token);
         }
 
-        public async Task Revoke(RefreshToken refreshToken)
+        public void Revoke(RefreshToken refreshToken)
         {
             refreshToken.IsRevoked = true;
             refreshToken.RevokedAt = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
         }
     }
 }

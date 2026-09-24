@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,15 +23,28 @@ var connectionString = builder.Configuration.GetConnectionString("CheckMate") ??
 builder.Services.AddDbContext<CheckMateDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddScoped<IUnitOfWork>(provider =>
+    provider.GetRequiredService<CheckMateDbContext>());
+
 builder.Services.
     AddIdentityCore<User>(options =>
     {
+        // User
+        options.SignIn.RequireConfirmedEmail = false;
+        options.User.RequireUniqueEmail = true
+
+        // Password
         options.Password.RequiredLength = 8;
         options.Password.RequireDigit = true;
         options.Password.RequireUppercase = true;
         options.Password.RequireLowercase = true;
         options.Password.RequireNonAlphanumeric = true;
         options.Password.RequiredUniqueChars = 1;
+
+        // Lockout
+        options.Lockout.AllowedForNewUsers = false;
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+        options.Lockout.MaxFailedAccessAttempts = 5;
     })
     .AddRoles<Role>()
     .AddEntityFrameworkStores<CheckMateDbContext>();
@@ -49,8 +63,12 @@ builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 #endregion
 
-builder.Services.Configure<JwtSettings>(
-    builder.Configuration.GetSection("JwtSettings"));
+var jwtSection = builder.Configuration.GetSection("JwtSettings");
+
+builder.Services.Configure<JwtSettings>(jwtSection);
+
+var jwtSettings = jwtSection.Get<JwtSettings>()
+    ?? throw new InvalidOperationException("JwtSettings configuration is missing.");
 
 builder.Services.AddAuthentication(options =>
 {
@@ -63,15 +81,15 @@ builder.Services.AddAuthentication(options =>
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = "",
+            ValidIssuer = jwtSettings.Issuer,
             ValidateAudience = true,
-            ValidAudience = "",
+            ValidAudience = jwtSettings.Audience,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String("")),
+            IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(jwtSettings.SigningKey)),
             ClockSkew = TimeSpan.Zero,
             NameClaimType = JwtRegisteredClaimNames.Name,
-            RoleClaimType = "role",
+            RoleClaimType = ClaimTypes.Role,
         };
     });
 

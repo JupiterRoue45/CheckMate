@@ -13,25 +13,26 @@ using System.Text;
 using CheckMate.Application.DTOs.Authentification;
 using CheckMate.Infrastructure.Repositories.Interfaces;
 using CheckMate.Application.Interfaces;
+using CheckMate.Infrastructure.Persistence;
 
 namespace CheckMate.Application.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
         private readonly JwtSettings jwtSettings;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IUnitOfWork _unitOfWork;
         public TokenService(
-            IConfiguration configuration,
             UserManager<User> userManager,
             IOptions<JwtSettings> options,
-            IRefreshTokenRepository refreshTokenRepository)
+            IRefreshTokenRepository refreshTokenRepository,
+            IUnitOfWork unitOfWork)
         {
-            _configuration = configuration;
             _userManager = userManager;
             jwtSettings = options.Value;
             _refreshTokenRepository = refreshTokenRepository;
+            _unitOfWork = unitOfWork;
         }
         /// <summary>
         /// 
@@ -128,6 +129,37 @@ namespace CheckMate.Application.Services
             };
         }
 
+        public async Task<AuthResponseDto?> RefreshToken(string token)
+        {
+            RefreshToken? existingRefreshToken = await _refreshTokenRepository.GetRefreshToken(token);
+
+            if (existingRefreshToken is null
+                || existingRefreshToken.IsRevoked
+                || existingRefreshToken.Expires <= DateTime.UtcNow
+                || !existingRefreshToken.User.IsActive)
+
+                return null;
+
+            IList<string> roles = await _userManager.GetRolesAsync(existingRefreshToken.User);
+
+            AccessTokenGenerationDto accessToken = await GenerateAccessTokenAsync(existingRefreshToken.User, roles);
+
+            RefreshToken newRefreshToken = GenerateRefreshToken(accessToken.JwtId, existingRefreshToken.UserId);
+
+             _refreshTokenRepository.CreateToken(newRefreshToken);
+
+             _refreshTokenRepository.Revoke(existingRefreshToken);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return new AuthResponseDto
+            {
+                AccessToken = accessToken.AccessToken,
+                RefreshToken = newRefreshToken.Token,
+                AccessTokenExpiresAt = DateTime.UtcNow.AddMinutes(accessToken.AccessTokenExpiryMinutes)
+            };
+        }
+
         public async Task<bool> RevokeRefreshToken(string token)
         {
             RefreshToken? refreshToken = await _refreshTokenRepository.GetRefreshToken(token);
@@ -135,14 +167,18 @@ namespace CheckMate.Application.Services
             if (refreshToken is null || refreshToken.IsRevoked)
                 return false;
 
-            await _refreshTokenRepository.Revoke(refreshToken);
+            _refreshTokenRepository.Revoke(refreshToken);
+
+            await _unitOfWork.SaveChangesAsync();
 
             return true;
         }
 
         public async Task SaveRefreshToken(RefreshToken refreshToken)
         {
-            await _refreshTokenRepository.CreateToken(refreshToken);
+            _refreshTokenRepository.CreateToken(refreshToken);
+
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

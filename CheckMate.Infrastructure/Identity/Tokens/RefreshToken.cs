@@ -29,5 +29,7 @@ namespace CheckMate.Infrastructure.Identity.Tokens
         public string UserId { get; set; }
         public User User { get; set; }
 
+        public byte[] RowVersion { get; set; } = null!;
+
     }
 }

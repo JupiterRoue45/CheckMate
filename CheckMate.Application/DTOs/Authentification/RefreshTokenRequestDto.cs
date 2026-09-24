@@ -9,8 +9,5 @@ namespace CheckMate.Application.DTOs.Authentification
     {
         [Required]
         public string RefreshToken { get; set; } = null!;
-
-        [Required]
-        public string UserId { get; set; } = null!;
     }
 }

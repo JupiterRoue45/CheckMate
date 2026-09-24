@@ -7,10 +7,10 @@ namespace CheckMate.Infrastructure.Repositories.Interfaces
 {
     public interface IRefreshTokenRepository
     {
-        Task CreateToken(RefreshToken refreshToken);
+        void CreateToken(RefreshToken refreshToken);
 
         Task<RefreshToken?> GetRefreshToken(string token);
 
-        Task Revoke(RefreshToken refreshToken);
+        void Revoke(RefreshToken refreshToken);
     }
 }

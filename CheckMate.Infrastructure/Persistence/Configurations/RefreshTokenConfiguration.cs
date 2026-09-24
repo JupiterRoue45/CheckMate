@@ -36,6 +36,9 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
             builder.Property(rt => rt.CreatedAt)
                 .HasDefaultValueSql("GETUTCDATE()")
                 .IsRequired();
+
+            builder.Property(rt => rt.RowVersion)
+                .IsRowVersion();
         }
     }
 }

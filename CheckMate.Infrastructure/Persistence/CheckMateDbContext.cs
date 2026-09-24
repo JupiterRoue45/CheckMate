@@ -10,7 +10,7 @@ using System.Text;
 
 namespace CheckMate.Infrastructure.Persistence
 {
-    public class CheckMateDbContext : IdentityDbContext<User, Role, string>
+    public class CheckMateDbContext : IdentityDbContext<User, Role, string>, IUnitOfWork
     {
         // DbSets
         public DbSet<Address> Addresses => Set<Address>();

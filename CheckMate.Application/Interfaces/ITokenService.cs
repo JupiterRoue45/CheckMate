@@ -13,5 +13,6 @@ namespace CheckMate.Application.Interfaces
         RefreshToken GenerateRefreshToken(string jwtId, string userId);
         Task<bool> RevokeRefreshToken(string refreshToken);
         Task SaveRefreshToken(RefreshToken refreshToken);
+        Task<AuthResponseDto?> RefreshToken(string token);
     }
 }
