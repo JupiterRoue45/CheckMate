@@ -36,6 +36,12 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
             builder.Property(u => u.IsActive)
                 .IsRequired()
                 .HasDefaultValue(true);
+
+            builder.Property(u => u.Email)
+                .HasMaxLength(50)
+                .IsRequired();
+            builder.HasIndex(u => u.Email)
+                .IsUnique();
         }
     }
 }

@@ -1,10 +1,11 @@
-using CheckMate.Application.Interfaces.RepositoryInterfaces;
-using CheckMate.Application.Interfaces.ServiceInterfaces;
+using CheckMate.Application.Interfaces;
 using CheckMate.Application.Services;
+using CheckMate.Infrastructure.Configurations;
 using CheckMate.Infrastructure.Identity;
 using CheckMate.Infrastructure.Persistence;
 using CheckMate.Infrastructure.Persistence.SeedData;
-using CheckMate.Infrastructure.Repositories;
+using CheckMate.Infrastructure.Repositories.Implementations;
+using CheckMate.Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +20,15 @@ builder.Services.AddDbContext<CheckMateDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.
-    AddIdentityCore<User>()
+    AddIdentityCore<User>(options =>
+    {
+        options.Password.RequiredLength = 8;
+        options.Password.RequireDigit = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequiredUniqueChars = 1;
+    })
     .AddRoles<Role>()
     .AddEntityFrameworkStores<CheckMateDbContext>();
 
@@ -34,6 +43,9 @@ builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 #region application
 builder.Services.AddScoped<ICountryService, CountryService>();
 #endregion
+
+builder.Services.Configure<JwtSettings>(
+    builder.Configuration.GetSection("JwtSettings"));
 
 var app = builder.Build();
 

@@ -1,5 +1,6 @@
 ﻿using CheckMate.Domain.Entities;
 using CheckMate.Infrastructure.Identity;
+using CheckMate.Infrastructure.Identity.Tokens;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -32,6 +33,7 @@ namespace CheckMate.Infrastructure.Persistence
         public DbSet<RoomType> RoomTypes => Set<RoomType>();
         public DbSet<RoomUnavailability> RoomUnavailabilities => Set<RoomUnavailability>();
         public DbSet<Service> Services => Set<Service>();
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
         public CheckMateDbContext(DbContextOptions<CheckMateDbContext> options) : base(options) {
         

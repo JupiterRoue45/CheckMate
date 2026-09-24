@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CheckMate.Application\CheckMate.Application.csproj" />
     <ProjectReference Include="..\CheckMate.Domain\CheckMate.Domain.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿using CheckMate.Application.Interfaces.ServiceInterfaces;
+﻿using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

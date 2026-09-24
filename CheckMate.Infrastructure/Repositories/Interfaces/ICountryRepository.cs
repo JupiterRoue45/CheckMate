@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CheckMate.Application.Interfaces.RepositoryInterfaces
+namespace CheckMate.Infrastructure.Repositories.Interfaces
 {
     public interface ICountryRepository
     {
