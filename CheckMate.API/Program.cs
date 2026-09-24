@@ -31,7 +31,7 @@ builder.Services.
     {
         // User
         options.SignIn.RequireConfirmedEmail = false;
-        options.User.RequireUniqueEmail = true
+        options.User.RequireUniqueEmail = true;
 
         // Password
         options.Password.RequiredLength = 8;

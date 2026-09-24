@@ -100,6 +100,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpPost("refresh-token")]
+        [Authorize]
         public async Task<IActionResult> RefreshToken(RefreshTokenRequestDto request)
         {
             AuthResponseDto? authResponse = await _tokenService.RefreshToken(request.RefreshToken);
