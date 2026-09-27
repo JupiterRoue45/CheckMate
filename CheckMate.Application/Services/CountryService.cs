@@ -1,6 +1,6 @@
-﻿using CheckMate.Application.Interfaces.RepositoryInterfaces;
-using CheckMate.Application.Interfaces.ServiceInterfaces;
+﻿using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
+using CheckMate.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;

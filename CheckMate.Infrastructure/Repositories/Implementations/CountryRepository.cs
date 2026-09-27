@@ -1,12 +1,12 @@
-﻿using CheckMate.Application.Interfaces.RepositoryInterfaces;
-using CheckMate.Domain.Entities;
+﻿using CheckMate.Domain.Entities;
 using CheckMate.Infrastructure.Persistence;
+using CheckMate.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CheckMate.Infrastructure.Repositories
+namespace CheckMate.Infrastructure.Repositories.Implementations
 {
     public class CountryRepository : ICountryRepository
     {
@@ -19,7 +19,9 @@ namespace CheckMate.Infrastructure.Repositories
 
         public async Task<IEnumerable<Country>> GetAllCountries()
         {
-            return  await _context.Countries.ToListAsync() ;
+            return  await _context.Countries
+                .AsNoTrackingWithIdentityResolution()
+                .ToListAsync() ;
         }
     }
 }
