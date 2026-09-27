@@ -37,7 +37,7 @@ namespace CheckMate.API.Controllers
 
             // if the user does not exist or entered the wrong password
             if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
-                return Unauthorized();
+                return Unauthorized("Inexistant user, or wrong password.");
 
             // Disabled account
             if (!user.IsActive)
@@ -100,7 +100,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpPost("refresh-token")]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> RefreshToken(RefreshTokenRequestDto request)
         {
             AuthResponseDto? authResponse = await _tokenService.RefreshToken(request.RefreshToken);

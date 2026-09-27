@@ -42,10 +42,12 @@ namespace CheckMate.Tests.Application.Services
 
         private readonly RefreshToken _refreshToken = new()
         {
-           Token = "PkTZbahPLaqBKYn1CJuwF1K+DcJ7DJgCssu0G+YIqhNUKswOTNpqtN4WErRyzD77LefoWFbl1mYOLTd6PBlmpw==",
-           IsRevoked = false,
-           RevokedAt = null,
-           UserId = "0e55319f-8c9e-4111-9c44-3f5a4e14c32d"
+            Token = "PkTZbahPLaqBKYn1CJuwF1K+DcJ7DJgCssu0G+YIqhNUKswOTNpqtN4WErRyzD77LefoWFbl1mYOLTd6PBlmpw==",
+            IsRevoked = false,
+            RevokedAt = null,
+            UserId = "0e55319f-8c9e-4111-9c44-3f5a4e14c32d",
+            Expires = DateTime.UtcNow.AddDays(1)
+
         };
 
         private readonly Mock<IOptions<JwtSettings>> _mockIOptions;
