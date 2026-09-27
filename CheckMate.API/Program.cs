@@ -1,3 +1,4 @@
+using CheckMate.API.Middlewares;
 using CheckMate.Application.Interfaces;
 using CheckMate.Application.Services;
 using CheckMate.Infrastructure.Configurations;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -52,6 +54,13 @@ builder.Services.
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddSerilog(options =>
+{
+    options.ReadFrom.Configuration(builder.Configuration);
+});
+
+builder.Services.AddTransient<CorrelationMiddleware>();
 
 # region reporitories
 builder.Services.AddScoped<ICountryRepository, CountryRepository>();
@@ -113,8 +122,13 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseMiddleware<CorrelationMiddleware>();
+
+app.UseSerilogRequestLogging();
+
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
