@@ -88,12 +88,14 @@ builder.Services.AddTransient<CorrelationMiddleware>();
 builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 #endregion
 
 #region application
 builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
+builder.Services.AddScoped<IRoomService, RoomService>();
 #endregion
 
 var jwtSection = builder.Configuration.GetSection("JwtSettings");

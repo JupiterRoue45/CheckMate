@@ -28,7 +28,7 @@ namespace CheckMate.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<RoomType>> GetAll()
         {
-            return _context.RoomTypes.AsNoTracking().AsEnumerable();
+            return await _context.RoomTypes.AsNoTracking().ToListAsync();
         }
     }
 }
