@@ -29,4 +29,5 @@ appsettings.Development.json
 Thumbs.db
 
 # Logs
+/CheckMate.API/Logs/
 *.log

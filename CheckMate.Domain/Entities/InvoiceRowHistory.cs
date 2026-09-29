@@ -7,22 +7,17 @@ namespace CheckMate.Domain.Entities
 {
     public class InvoiceRowHistory
     {
-        [Key]
         public int InvoiceRowHistoryId { get; set; }
 
-        [Required]
         public int InvoiceRowId { get; set; }
+        public InvoiceRow InvoiceRow { get; set; }
 
-        [Required]
         public DateTime CreationDateTime { get; set; }
 
-        [Required]
         public decimal OriginalPrice { get; set; }
 
-        [Required]
         public decimal NewPrice { get; set; }
 
-        [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
     }
 }

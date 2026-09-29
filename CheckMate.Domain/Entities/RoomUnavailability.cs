@@ -7,26 +7,19 @@ namespace CheckMate.Domain.Entities
 {
     public class RoomUnavailability
     {
-        [Key]
         public int RoomUnavailabilityId { get; set; }
 
-        [Required]
         public int RoomId { get; set; }
-
         public Room Room { get; set; }
 
-        [Required]
-        public DateTime StartingDate { get; set; }
+        public DateOnly StartingDate { get; set; }
 
-        [Required]
-        public DateTime EndingDate { get; set; }
+        public DateOnly EndingDate { get; set; }
 
-        [Required]
         public string Reason { get; set; }
 
         public string? Comment { get; set; }
 
-        [Required]
         public DateTime CreatedAt { get; set; }
     }
 }

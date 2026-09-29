@@ -7,13 +7,12 @@ namespace CheckMate.Domain.Entities
 {
     public class Invoice
     {
-        [Key]
         public int InvoiceNumber { get; set; }
 
-        [Required]
         public DateTime InvoiceDate { get; set; }
 
-        [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
+
+        public ICollection<OngoingInvoice> OngoingInvoices { get; set; } = [];
     }
 }
