@@ -1,4 +1,5 @@
-﻿using CheckMate.Application.Interfaces;
+﻿using CheckMate.Application.DTOs.RoomType;
+using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -37,6 +38,23 @@ namespace CheckMate.API.Controllers
             }
 
             return Ok(type);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(RoomTypeCreationDto requestDto)
+        {
+            RoomType createdRoomType = await _roomTypeService.CreateRoomType(requestDto);
+            return CreatedAtAction(
+                nameof(Get),
+                new { Id = createdRoomType.RoomTypeId},
+                createdRoomType
+                );
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }

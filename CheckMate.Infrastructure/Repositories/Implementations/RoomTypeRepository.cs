@@ -16,9 +16,9 @@ namespace CheckMate.Infrastructure.Repositories.Implementations
         {
             _context = context;
         }
-        public Task Create(RoomType roomType)
+        public async Task Create(RoomType roomType)
         {
-            throw new NotImplementedException();
+            await _context.RoomTypes.AddAsync(roomType);
         }
 
         public async Task<RoomType?> Get(int Id)
