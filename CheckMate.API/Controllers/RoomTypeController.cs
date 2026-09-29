@@ -54,7 +54,9 @@ namespace CheckMate.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            throw new NotImplementedException();
+            IEnumerable<RoomType> roomTypes = await _roomTypeService.GetAllRoomTypes();
+
+            return Ok(roomTypes);
         }
     }
 }

@@ -25,5 +25,10 @@ namespace CheckMate.Infrastructure.Repositories.Implementations
         {
             return await _context.RoomTypes.FirstOrDefaultAsync(rt => rt.RoomTypeId == Id);
         }
+
+        public async Task<IEnumerable<RoomType>> GetAll()
+        {
+            return _context.RoomTypes.AsNoTracking().AsEnumerable();
+        }
     }
 }

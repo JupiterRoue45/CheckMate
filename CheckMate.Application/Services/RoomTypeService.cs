@@ -44,5 +44,10 @@ namespace CheckMate.Application.Services
 
             return roomType;
         }
+
+        public async Task<IEnumerable<RoomType>> GetAllRoomTypes()
+        {
+            return await _roomTypeRepository.GetAll();
+        }
     }
 }
