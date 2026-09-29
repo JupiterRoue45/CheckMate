@@ -1,3 +1,4 @@
+using CheckMate.API.ExceptionHandlers;
 using CheckMate.API.Middlewares;
 using CheckMate.Application.Interfaces;
 using CheckMate.Application.Services;
@@ -55,12 +56,33 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+#region Exceptions
+
+builder.Services.AddProblemDetails(options =>
+{
+    options.CustomizeProblemDetails = ctx =>
+    {
+        ctx.ProblemDetails.Extensions["requestId"] = ctx.HttpContext.TraceIdentifier;
+        ctx.ProblemDetails.Extensions["timestamp"] = DateTime.UtcNow;
+        ctx.ProblemDetails.Extensions["method"] = ctx.HttpContext.Request.Method;
+        ctx.ProblemDetails.Instance = ctx.HttpContext.Request.Path;
+    };
+});
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+#endregion
+
+#region Logging
+
 builder.Services.AddSerilog(options =>
 {
     options.ReadFrom.Configuration(builder.Configuration);
 });
 
 builder.Services.AddTransient<CorrelationMiddleware>();
+
+#endregion
 
 # region reporitories
 builder.Services.AddScoped<ICountryRepository, CountryRepository>();
@@ -125,6 +147,8 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<CorrelationMiddleware>();
 
 app.UseSerilogRequestLogging();
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 
