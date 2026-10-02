@@ -25,5 +25,10 @@ namespace CheckMate.Infrastructure.Repositories.Implementations
         {
             return await _context.Rooms.FirstOrDefaultAsync(r => r.RoomId == Id);
         }
+
+        public async Task Create(Room room)
+        {
+            await _context.Rooms.AddAsync(room);
+        }
     }
 }

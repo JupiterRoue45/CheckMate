@@ -10,5 +10,7 @@ namespace CheckMate.Infrastructure.Repositories.Interfaces
         Task<IEnumerable<Room>> GetAll();
 
         Task<Room?> Get(int Id);
+
+        Task Create(Room room);
     }
 }

@@ -1,5 +1,7 @@
-﻿using CheckMate.Application.Interfaces;
+﻿using CheckMate.Application.DTOs.Room;
+using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
+using CheckMate.Domain.Enums;
 using CheckMate.Infrastructure.Persistence;
 using CheckMate.Infrastructure.Repositories.Interfaces;
 using System;
@@ -29,6 +31,24 @@ namespace CheckMate.Application.Services
         public async Task<Room?> GetRoom(int Id)
         {
             return await _roomRepository.Get(Id);
+        }
+
+        public async Task<Room> CreateRoom(RoomCreationDto dto)
+        {
+            Room room = new Room
+            {
+                RoomNumber = dto.Number,
+                Floor = dto.Floor,
+                Area = dto.Area,
+                RoomStatus = RoomStatusEnum.Clean,
+                RoomTypeId = dto.RoomTypeId
+            };
+
+            await _roomRepository.Create(room);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return room;
         }
     }
 }

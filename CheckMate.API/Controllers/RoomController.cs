@@ -1,4 +1,5 @@
-﻿using CheckMate.Application.Interfaces;
+﻿using CheckMate.Application.DTOs.Room;
+using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +36,7 @@ namespace CheckMate.API.Controllers
             {
                 return Problem(
                     title: "Non existant element",
-                    detail: $"There is no room with the number : {Id}",
+                    detail: $"There is no room with the id : {Id}",
                     instance: Request.Path,
                     statusCode: StatusCodes.Status404NotFound,
                     type: ""
@@ -43,6 +44,25 @@ namespace CheckMate.API.Controllers
             }
 
             return Ok(room);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(RoomCreationDto requestDto)
+        {
+            Room createdRoom = await _roomService.CreateRoom(requestDto);
+
+            if (createdRoom is null)
+            {
+                return Problem(
+                    title: "Creation failed",
+                    detail: $"The room could not be created.",
+                    instance: Request.Path,
+                    statusCode: StatusCodes.Status400BadRequest,
+                    type: ""
+                    );
+            }
+
+            return CreatedAtAction(nameof(Get), new { Id = createdRoom.RoomId }, createdRoom);
         }
     }
 }
