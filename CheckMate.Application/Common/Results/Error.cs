@@ -4,6 +4,12 @@ using System.Text;
 
 namespace CheckMate.Application.Common.Results
 {
+    /// <summary>
+    /// Represents an error that can occur during the execution of an operation.
+    /// </summary>
+    /// <param name="Code"></param>
+    /// <param name="Message"></param>
+    /// <param name="Type"></param>
     public readonly record struct Error(string Code, string Message, ErrorTypeEnum Type)
     {
         public static Error None => new(string.Empty, string.Empty, ErrorTypeEnum.FAILURE);

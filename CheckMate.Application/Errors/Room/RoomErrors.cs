@@ -5,6 +5,9 @@ using System.Text;
 
 namespace CheckMate.Application.Errors.Room
 {
+    /// <summary>
+    /// Represents a collection of error messages related to room operations.
+    /// </summary>
     public static class RoomErrors
     {
         public static Error NotFound(int id) => Error.NotFound(

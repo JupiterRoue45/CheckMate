@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CheckMate.API.Helpers
 {
+    /// <summary>
+    /// Provides extension methods for converting application errors to IActionResult responses in ASP.NET Core controllers.
+    /// </summary>
     public static class ControllerErrorHelper
     {
         public static IActionResult ToActionResult(

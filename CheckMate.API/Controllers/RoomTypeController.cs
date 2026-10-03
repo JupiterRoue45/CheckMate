@@ -1,4 +1,6 @@
-﻿using CheckMate.Application.DTOs.RoomType;
+﻿using CheckMate.API.Helpers;
+using CheckMate.Application.Common.Results;
+using CheckMate.Application.DTOs.RoomType;
 using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -24,20 +26,16 @@ namespace CheckMate.API.Controllers
         [Authorize]
         public async Task<IActionResult> Get(int Id)
         {
-            RoomType? type = await _roomTypeService.GetRoomType(Id);
+            Result<RoomType> result = await _roomTypeService.GetRoomType(Id);
 
-            if (type is null)
+            if (result.IsFailure)
             {
-                return Problem(
-                    statusCode: StatusCodes.Status404NotFound,
-                    instance: Request.Path,
-                    title: "Non existant element",
-                    type: "",
-                    detail:$"There is no RoomType with the id : {Id}"
-                    );
+                return result.Error.Value.ToActionResult(this);
             }
-
-            return Ok(type);
+            else
+            {
+                return Ok(result.Value);
+            }
         }
 
         [HttpPost]

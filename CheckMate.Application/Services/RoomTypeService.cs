@@ -1,4 +1,6 @@
-﻿using CheckMate.Application.DTOs.RoomType;
+﻿using CheckMate.Application.Common.Results;
+using CheckMate.Application.DTOs.RoomType;
+using CheckMate.Application.Errors.RoomType;
 using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
 using CheckMate.Infrastructure.Persistence;
@@ -23,9 +25,16 @@ namespace CheckMate.Application.Services
             _roomTypeRepository = roomTypeRepository;
         }
 
-        public Task<RoomType?> GetRoomType(int Id)
+        public async Task<Result<RoomType>> GetRoomType(int Id)
         {
-            return _roomTypeRepository.Get(Id);
+            RoomType? roomType = await _roomTypeRepository.Get(Id);
+
+            if (roomType == null)
+            {
+                return Result<RoomType>.Failure(RoomTypeErrors.NotFound(Id));
+            }
+
+            return Result<RoomType>.Success(roomType);
         }
 
         public async Task<RoomType> CreateRoomType(RoomTypeCreationDto dto)
