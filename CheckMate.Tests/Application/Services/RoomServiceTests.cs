@@ -1,6 +1,7 @@
 ﻿using CheckMate.Application.DTOs.Room;
 using CheckMate.Application.Errors.Room;
 using CheckMate.Application.Services;
+using CheckMate.Domain.Entities;
 using CheckMate.Infrastructure.Persistence;
 using CheckMate.Infrastructure.Repositories.Interfaces;
 using Moq;
@@ -97,6 +98,47 @@ namespace CheckMate.Tests.Application.Services
             Assert.Equal(roomCreationDto.Floor, result.Value.Floor);
             Assert.Equal(roomCreationDto.Area, result.Value.Area);
             Assert.Equal(roomCreationDto.RoomTypeId, result.Value.RoomTypeId);
+        }
+
+        [Fact]
+        public async Task GetRoom_ShouldReturnError_WhenRoomDoesNotExist()
+        {
+            // Arrange
+            int roomId = 999;
+            _roomRepositoryMock.Setup(repo => repo.GetByIdAsync(roomId))
+                .ReturnsAsync((Room)null);
+
+            // Act
+            var result = await _roomService.GetRoom(roomId);
+
+            // Assert
+            Assert.False(result.IsSuccess);
+            Assert.Equal(RoomErrors.NotFound(roomId), result.Error);
+        }
+
+        [Fact]
+        public async Task GetRoom_ShouldReturnRoom_WhenRoomExists()
+        {
+            // Arrange
+            int roomId = 1;
+            var room = new Room
+            {
+                RoomId = roomId,
+                RoomNumber = "101",
+                Floor = 1,
+                Area = 20.5m,
+                RoomTypeId = 1
+            };
+            _roomRepositoryMock.Setup(repo => repo.GetByIdAsync(roomId))
+                .ReturnsAsync(room);
+
+            // Act
+            var result = await _roomService.GetRoom(roomId);
+
+            // Assert
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Value);
+            Assert.Equal(roomId, result.Value.RoomId);
         }
     }
 }
