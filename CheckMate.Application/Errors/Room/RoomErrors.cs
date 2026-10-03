@@ -15,9 +15,9 @@ namespace CheckMate.Application.Errors.Room
             message: $"Room with ID {id} was not found."
         );
 
-        public static Error AlreadyExists(string name) => Error.Conflict(
+        public static Error AlreadyExists(string number) => Error.Conflict(
             code: "Room.AlreadyExists",
-            message: $"Room with name '{name}' already exists."
+            message: $"Room with number '{number}' already exists."
         );
 
         public static Error InvalidRoomType(int roomTypeId) => Error.Validation(
@@ -29,6 +29,11 @@ namespace CheckMate.Application.Errors.Room
             code: "Room.InvalidRoomNumber",
             message: $"Room number '{roomNumber}' is invalid."
         );
+
+        public static Error InexistantRoomType(int id) => Error.Validation(
+            code: "Room.RoomTypeId",
+            message: $"the room type with the id {id} does not exist."
+            );
 
     }
 }

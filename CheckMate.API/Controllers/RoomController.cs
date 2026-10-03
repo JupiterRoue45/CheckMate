@@ -1,4 +1,5 @@
-﻿using CheckMate.Application.Common.Results;
+﻿using CheckMate.API.Helpers;
+using CheckMate.Application.Common.Results;
 using CheckMate.Application.DTOs.Room;
 using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
@@ -31,20 +32,14 @@ namespace CheckMate.API.Controllers
         [HttpGet("{Id:int}")]
         public async Task<IActionResult> Get(int Id)
         {
-            Result<Room> room = await _roomService.GetRoom(Id);
+            Result<Room> result = await  _roomService.GetRoom(Id);
 
-            if (room is null)
+            if (result.IsFailure)
             {
-                return Problem(
-                    title: "Non existant element",
-                    detail: $"There is no room with the id : {Id}",
-                    instance: Request.Path,
-                    statusCode: StatusCodes.Status404NotFound,
-                    type: ""
-                    );
+                return result.Error.Value.ToActionResult(this);
             }
 
-            return Ok(room);
+            return Ok(result.Value);
         }
 
         [HttpPost]
@@ -54,13 +49,7 @@ namespace CheckMate.API.Controllers
 
             if (result.IsFailure)
             {
-                return Problem(
-                    title: "Creation failed",
-                    detail: $"The room could not be created.",
-                    instance: Request.Path,
-                    statusCode: StatusCodes.Status400BadRequest,
-                    type: ""
-                    );
+                return result.Error.Value.ToActionResult(this);
             }
 
             return CreatedAtAction(nameof(Get), new { Id = result.Value.RoomId }, result.Value);

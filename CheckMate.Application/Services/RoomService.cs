@@ -37,6 +37,7 @@ namespace CheckMate.Application.Services
         public async Task<Result<Room>> GetRoom(int Id)
         {
             var room = await _roomRepository.Get(Id);
+
             if (room == null)
                 return Result<Room>.Failure(RoomErrors.NotFound(Id));
 
@@ -45,11 +46,17 @@ namespace CheckMate.Application.Services
 
         public async Task<Result<Room>> CreateRoom(RoomCreationDto dto)
         {
+            // We check if the room type exists
             bool roomTypeExists = await _roomTypeRepository.VerifyRoomTypeExistence(dto.RoomTypeId);
 
             if (!roomTypeExists)
-                return Result<Room>.Failure(RoomTypeErrors.NotFound(dto.RoomTypeId));
+                return Result<Room>.Failure(RoomErrors.InexistantRoomType(dto.RoomTypeId));
 
+            // We check if there is no room with the same number
+            bool roomNumberExists = await _roomRepository.VerifyRoomExistenceFromRoomNumber(dto.Number);
+
+            if (roomNumberExists)
+                return Result<Room>.Failure(RoomErrors.AlreadyExists(dto.Number));
 
             Room room = new Room
             {

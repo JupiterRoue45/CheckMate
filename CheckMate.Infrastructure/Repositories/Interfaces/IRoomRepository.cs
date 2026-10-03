@@ -12,5 +12,7 @@ namespace CheckMate.Infrastructure.Repositories.Interfaces
         Task<Room?> Get(int Id);
 
         Task Create(Room room);
+
+        Task<bool> VerifyRoomExistenceFromRoomNumber(string number);
     }
 }
