@@ -37,8 +37,13 @@ namespace CheckMate.Application.Services
             return Result<RoomType>.Success(roomType);
         }
 
-        public async Task<RoomType> CreateRoomType(RoomTypeCreationDto dto)
+        public async Task<Result<RoomType>> CreateRoomType(RoomTypeCreationDto dto)
         {
+            bool exists = await _roomTypeRepository.VerifyRoomTypeExistenceFromName(dto.Name);
+
+            if (exists)
+                return Result<RoomType>.Failure(RoomTypeErrors.AlreadyExists(dto.Name));
+
             RoomType roomType = new RoomType
             {
                 RoomTypeName = dto.Name,
@@ -51,7 +56,7 @@ namespace CheckMate.Application.Services
 
             await _unitOfWork.SaveChangesAsync();
 
-            return roomType;
+            return Result<RoomType>.Success(roomType);
         }
 
         public async Task<IEnumerable<RoomType>> GetAllRoomTypes()

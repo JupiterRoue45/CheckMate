@@ -10,7 +10,7 @@ namespace CheckMate.Application.Interfaces
     public interface IRoomTypeService
     {
         Task<Result<RoomType>> GetRoomType(int Id);
-        Task<RoomType> CreateRoomType(RoomTypeCreationDto dto);
+        Task<Result<RoomType>> CreateRoomType(RoomTypeCreationDto dto);
         Task<IEnumerable<RoomType>> GetAllRoomTypes();
     }
 }

@@ -11,5 +11,6 @@ namespace CheckMate.Infrastructure.Repositories.Interfaces
         Task Create(RoomType roomType);
         Task<IEnumerable<RoomType>> GetAll();
         Task<bool> VerifyRoomTypeExistence(int roomTypeId);
+        Task<bool> VerifyRoomTypeExistenceFromName(string roomTypeName);
     }
 }

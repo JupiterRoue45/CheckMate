@@ -41,7 +41,14 @@ namespace CheckMate.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(RoomTypeCreationDto requestDto)
         {
-            RoomType createdRoomType = await _roomTypeService.CreateRoomType(requestDto);
+            Result<RoomType> result = await _roomTypeService.CreateRoomType(requestDto);
+
+            if (result.IsFailure)
+            {
+                return result.Error.Value.ToActionResult(this);
+            }
+
+            RoomType createdRoomType = result.Value;
 
             return CreatedAtAction(
                 nameof(Get),
