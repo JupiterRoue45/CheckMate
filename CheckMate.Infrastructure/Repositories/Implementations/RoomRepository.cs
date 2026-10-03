@@ -16,22 +16,22 @@ namespace CheckMate.Infrastructure.Repositories.Implementations
         {
             _context = context;
         }
-        public async Task<IEnumerable<Room>> GetAll()
+        public async Task<IEnumerable<Room>> GetAllAsync()
         {
             return await _context.Rooms.AsNoTracking().ToListAsync();
         }
 
-        public async Task<Room?> Get(int Id)
+        public async Task<Room?> GetByIdAsync(int Id)
         {
             return await _context.Rooms.FirstOrDefaultAsync(r => r.RoomId == Id);
         }
 
-        public async Task Create(Room room)
+        public async Task CreateAsync(Room room)
         {
             await _context.Rooms.AddAsync(room);
         }
 
-        public async Task<bool> VerifyRoomExistenceFromRoomNumber(string number)
+        public async Task<bool> VerifyRoomExistenceFromRoomNumberAsync(string number)
         {
             return await _context.Rooms.AnyAsync(r => r.RoomNumber == number);
         }

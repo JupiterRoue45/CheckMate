@@ -31,12 +31,12 @@ namespace CheckMate.Application.Services
         }
         public async Task<IEnumerable<Room>> GetAllRooms()
         {
-            return await _roomRepository.GetAll();
+            return await _roomRepository.GetAllAsync();
         }
 
         public async Task<Result<Room>> GetRoom(int Id)
         {
-            var room = await _roomRepository.Get(Id);
+            var room = await _roomRepository.GetByIdAsync(Id);
 
             if (room == null)
                 return Result<Room>.Failure(RoomErrors.NotFound(Id));
@@ -53,7 +53,7 @@ namespace CheckMate.Application.Services
                 return Result<Room>.Failure(RoomErrors.InexistantRoomType(dto.RoomTypeId));
 
             // We check if there is no room with the same number
-            bool roomNumberExists = await _roomRepository.VerifyRoomExistenceFromRoomNumber(dto.Number);
+            bool roomNumberExists = await _roomRepository.VerifyRoomExistenceFromRoomNumberAsync(dto.Number);
 
             if (roomNumberExists)
                 return Result<Room>.Failure(RoomErrors.AlreadyExists(dto.Number));
@@ -67,7 +67,7 @@ namespace CheckMate.Application.Services
                 RoomTypeId = dto.RoomTypeId
             };
 
-            await _roomRepository.Create(room);
+            await _roomRepository.CreateAsync(room);
 
             await _unitOfWork.SaveChangesAsync();
 

@@ -7,12 +7,12 @@ namespace CheckMate.Infrastructure.Repositories.Interfaces
 {
     public interface IRoomRepository
     {
-        Task<IEnumerable<Room>> GetAll();
+        Task<IEnumerable<Room>> GetAllAsync();
 
-        Task<Room?> Get(int Id);
+        Task<Room?> GetByIdAsync(int Id);
 
-        Task Create(Room room);
+        Task CreateAsync(Room room);
 
-        Task<bool> VerifyRoomExistenceFromRoomNumber(string number);
+        Task<bool> VerifyRoomExistenceFromRoomNumberAsync(string number);
     }
 }
