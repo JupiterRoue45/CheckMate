@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CheckMate.Application.Common.Results
 {
-    public readonly struct Error(string Code, string Message, ErrorTypeEnum Type)
+    public readonly record struct Error(string Code, string Message, ErrorTypeEnum Type)
     {
         public static Error None => new(string.Empty, string.Empty, ErrorTypeEnum.FAILURE);
 

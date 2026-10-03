@@ -30,5 +30,10 @@ namespace CheckMate.Infrastructure.Repositories.Implementations
         {
             return await _context.RoomTypes.AsNoTracking().ToListAsync();
         }
+
+        public async Task<bool> VerifyRoomTypeExistence(int roomTypeId)
+        {
+            return await _context.RoomTypes.AnyAsync(rt => rt.RoomTypeId == roomTypeId);
+        }
     }
 }

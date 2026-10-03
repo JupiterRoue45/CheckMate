@@ -1,4 +1,5 @@
-﻿using CheckMate.Application.DTOs.Room;
+﻿using CheckMate.Application.Common.Results;
+using CheckMate.Application.DTOs.Room;
 using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +31,7 @@ namespace CheckMate.API.Controllers
         [HttpGet("{Id:int}")]
         public async Task<IActionResult> Get(int Id)
         {
-            Room? room = await _roomService.GetRoom(Id);
+            Result<Room> room = await _roomService.GetRoom(Id);
 
             if (room is null)
             {
@@ -49,9 +50,9 @@ namespace CheckMate.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(RoomCreationDto requestDto)
         {
-            Room createdRoom = await _roomService.CreateRoom(requestDto);
+            Result<Room> result = await _roomService.CreateRoom(requestDto);
 
-            if (createdRoom is null)
+            if (result.IsFailure)
             {
                 return Problem(
                     title: "Creation failed",
@@ -62,7 +63,7 @@ namespace CheckMate.API.Controllers
                     );
             }
 
-            return CreatedAtAction(nameof(Get), new { Id = createdRoom.RoomId }, createdRoom);
+            return CreatedAtAction(nameof(Get), new { Id = result.Value.RoomId }, result.Value);
         }
     }
 }

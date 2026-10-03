@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CheckMate.Application.Common.Results
 {
-    internal class Result<T> : Result
+    public class Result<T> : Result
     {
         private readonly T? _value;
 

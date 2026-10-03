@@ -1,0 +1,31 @@
+﻿using CheckMate.Application.Common.Results;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace CheckMate.Application.Errors.Room
+{
+    public static class RoomErrors
+    {
+        public static Error NotFound(int id) => Error.NotFound(
+            code: "Room.NotFound",
+            message: $"Room with ID {id} was not found."
+        );
+
+        public static Error AlreadyExists(string name) => Error.Conflict(
+            code: "Room.AlreadyExists",
+            message: $"Room with name '{name}' already exists."
+        );
+
+        public static Error InvalidRoomType(int roomTypeId) => Error.Validation(
+            code: "Room.InvalidRoomType",
+            message: $"Room type with ID {roomTypeId} is invalid."
+        );
+
+        public static Error InvalidRoomNumber(string roomNumber) => Error.Validation(
+            code: "Room.InvalidRoomNumber",
+            message: $"Room number '{roomNumber}' is invalid."
+        );
+
+    }
+}

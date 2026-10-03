@@ -1,4 +1,7 @@
-﻿using CheckMate.Application.DTOs.Room;
+﻿using CheckMate.Application.Common.Results;
+using CheckMate.Application.DTOs.Room;
+using CheckMate.Application.Errors.Room;
+using CheckMate.Application.Errors.RoomType;
 using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
 using CheckMate.Domain.Enums;
@@ -13,28 +16,41 @@ namespace CheckMate.Application.Services
     public class RoomService : IRoomService
     {
         private readonly IRoomRepository _roomRepository;
+        private readonly IRoomTypeRepository _roomTypeRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public RoomService(
             IRoomRepository roomRepository,
+            IRoomTypeRepository roomTypeRepository,
             IUnitOfWork unitOfWork
             )
         {
             _roomRepository = roomRepository;
             _unitOfWork = unitOfWork;
+            _roomTypeRepository = roomTypeRepository;
         }
         public async Task<IEnumerable<Room>> GetAllRooms()
         {
             return await _roomRepository.GetAll();
         }
 
-        public async Task<Room?> GetRoom(int Id)
+        public async Task<Result<Room>> GetRoom(int Id)
         {
-            return await _roomRepository.Get(Id);
+            var room = await _roomRepository.Get(Id);
+            if (room == null)
+                return Result<Room>.Failure(RoomErrors.NotFound(Id));
+
+            return Result<Room>.Success(room);
         }
 
-        public async Task<Room> CreateRoom(RoomCreationDto dto)
+        public async Task<Result<Room>> CreateRoom(RoomCreationDto dto)
         {
+            bool roomTypeExists = await _roomTypeRepository.VerifyRoomTypeExistence(dto.RoomTypeId);
+
+            if (!roomTypeExists)
+                return Result<Room>.Failure(RoomTypeErrors.NotFound(dto.RoomTypeId));
+
+
             Room room = new Room
             {
                 RoomNumber = dto.Number,
@@ -48,7 +64,7 @@ namespace CheckMate.Application.Services
 
             await _unitOfWork.SaveChangesAsync();
 
-            return room;
+            return Result<Room>.Success(room);
         }
     }
 }

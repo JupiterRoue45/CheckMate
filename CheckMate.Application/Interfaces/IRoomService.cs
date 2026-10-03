@@ -1,4 +1,5 @@
-﻿using CheckMate.Application.DTOs.Room;
+﻿using CheckMate.Application.Common.Results;
+using CheckMate.Application.DTOs.Room;
 using CheckMate.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,8 @@ namespace CheckMate.Application.Interfaces
     {
         Task<IEnumerable<Room>> GetAllRooms();
 
-        Task<Room?> GetRoom(int Id);
+        Task<Result<Room>> GetRoom(int Id);
 
-        Task<Room> CreateRoom(RoomCreationDto dto);
+        Task<Result<Room>> CreateRoom(RoomCreationDto dto);
     }
 }
