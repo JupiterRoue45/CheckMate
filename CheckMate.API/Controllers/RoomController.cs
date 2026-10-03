@@ -48,6 +48,7 @@ namespace CheckMate.API.Controllers
             Result<Room> result = await _roomService.CreateRoom(requestDto);
 
             if (result.IsFailure)
+
             {
                 return result.Error.Value.ToActionResult(this);
             }
