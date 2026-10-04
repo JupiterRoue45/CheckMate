@@ -1,5 +1,5 @@
 ﻿using CheckMate.Application.Common.Results;
-using CheckMate.Application.DTOs;
+using CheckMate.Application.DTOs.ServiceDelivery;
 using CheckMate.Application.Errors.ServiceDelivery;
 using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;

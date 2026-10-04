@@ -1,6 +1,6 @@
 ﻿using CheckMate.API.Helpers;
 using CheckMate.Application.Common.Results;
-using CheckMate.Application.DTOs;
+using CheckMate.Application.DTOs.ServiceDelivery;
 using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
 using Microsoft.AspNetCore.Http;
