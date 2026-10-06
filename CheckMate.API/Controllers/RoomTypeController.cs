@@ -39,6 +39,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(RoomTypeCreationDto requestDto)
         {
             Result<RoomType> result = await _roomTypeService.CreateRoomType(requestDto);
@@ -58,6 +59,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<RoomType> roomTypes = await _roomTypeService.GetAllRoomTypes();

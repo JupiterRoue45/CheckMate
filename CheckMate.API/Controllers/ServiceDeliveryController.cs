@@ -1,8 +1,9 @@
 ﻿using CheckMate.API.Helpers;
 using CheckMate.Application.Common.Results;
-using CheckMate.Application.DTOs;
+using CheckMate.Application.DTOs.ServiceDelivery;
 using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(ServiceDeliveryCreationDto dto)
         {
             Result<Service> result = await _serviceDeliveryService.CreateServiceAsync(dto);
@@ -32,6 +34,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpGet("{Id:int}")]
+        [Authorize]
         public async Task<IActionResult> Get(int Id)
         {
             Result<Service> result = await _serviceDeliveryService.GetServiceByIdAsync(Id);
@@ -45,6 +48,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<Service> services = await _serviceDeliveryService.GetAllServices();

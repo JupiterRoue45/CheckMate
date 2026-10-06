@@ -3,6 +3,7 @@ using CheckMate.Application.Common.Results;
 using CheckMate.Application.DTOs.Room;
 using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<Room> rooms = await _roomService.GetAllRooms();
@@ -30,6 +32,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpGet("{Id:int}")]
+        [Authorize]
         public async Task<IActionResult> Get(int Id)
         {
             Result<Room> result = await  _roomService.GetRoom(Id);
@@ -43,6 +46,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(RoomCreationDto requestDto)
         {
             Result<Room> result = await _roomService.CreateRoom(requestDto);
