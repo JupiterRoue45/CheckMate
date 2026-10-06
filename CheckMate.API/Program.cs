@@ -58,6 +58,8 @@ builder.Services.
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ValidationFilter>();
+
+    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
 });
 
 #region FluentValidation
@@ -169,6 +171,8 @@ app.UseMiddleware<CorrelationMiddleware>();
 app.UseSerilogRequestLogging();
 
 app.UseExceptionHandler();
+
+app.UseStatusCodePages();
 
 app.UseHttpsRedirection();
 

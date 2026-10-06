@@ -19,12 +19,10 @@ namespace CheckMate.Application.Validators.RoomType
                 .When(x => !string.IsNullOrEmpty(x.Description));
 
             RuleFor(x => x.Rank)
-                .GreaterThan(0).WithMessage("Rank must be a positive integer.")
-                .NotEmpty().WithMessage("Rank is required.");
+                .GreaterThan(0).WithMessage("Rank must be a positive integer.");
 
             RuleFor(x => x.MaxOccupancy)
-                .GreaterThan(0).WithMessage("Max occupancy must be a positive integer.")
-                .NotEmpty().WithMessage("Max occupancy is required.");
+                .GreaterThan(0).WithMessage("Max occupancy must be a positive integer.");
         }
     }
 }
