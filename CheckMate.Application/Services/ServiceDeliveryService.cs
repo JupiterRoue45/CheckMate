@@ -64,9 +64,24 @@ namespace CheckMate.Application.Services
             return Result<Service>.Success(service);
         }
 
-        public async Task<Service> UpdateService()
+        public async Task<Result<Service>> UpdateServiceAsync(int serviceId, ServiceDeliveryUpdateDto dto)
         {
-            throw new NotImplementedException();
+            Service? service = await _serviceRepository.GetByIdAsync(serviceId);
+
+            if (service == null)
+            {
+                return Result<Service>.Failure(ServiceDeliveryErrors.NotFound(serviceId));
+            }
+
+            service.ServiceName = dto.Name;
+            service.ServiceDescription = dto.Description;
+            service.ServiceUnitPrice = dto.UnitPrice;
+
+            await _serviceRepository.UpdateAsync(service);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return Result<Service>.Success(service);
         }
     }
 }

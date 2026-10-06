@@ -72,6 +72,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddOpenApi();
 
 builder.Services.AddValidatorsFromAssemblyContaining<RoomRegistrationValidator>();
+
 #region Exceptions
 
 builder.Services.AddProblemDetails(options =>

@@ -15,6 +15,6 @@ namespace CheckMate.Application.Interfaces
 
         Task<IEnumerable<Service>> GetAllServices();
 
-        Task<Service> UpdateService();
+        Task<Result<Service>> UpdateServiceAsync(int serviceId, ServiceDeliveryUpdateDto dto);
     }
 }

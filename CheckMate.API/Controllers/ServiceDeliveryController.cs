@@ -55,5 +55,19 @@ namespace CheckMate.API.Controllers
 
             return Ok(services);
         }
+
+        [HttpPut("{Id:int}")]
+        [Authorize]
+        public async Task<IActionResult> Update(int Id, ServiceDeliveryUpdateDto dto)
+        {
+            Result<Service> result = await _serviceDeliveryService.UpdateServiceAsync(Id, dto);
+
+            if (result.IsFailure)
+            {
+                return result.Error.Value.ToActionResult(this);
+            }
+
+            return Ok(result.Value);
+        }
     }
 }
