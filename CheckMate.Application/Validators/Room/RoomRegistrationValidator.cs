@@ -17,7 +17,7 @@ namespace CheckMate.Application.Validators.Room
 
             RuleFor(r => r.RoomTypeId)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage("Room type is required.");
+                .GreaterThan(0).WithMessage("Room type is required and must be a positive integer.");
 
             RuleFor(r => r.Area)
                 .Cascade(CascadeMode.Stop)
