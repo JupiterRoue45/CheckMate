@@ -15,6 +15,6 @@ namespace CheckMate.Domain.Entities
 
         public decimal ServiceUnitPrice { get; set; }
 
-        public bool IsAvailable { get; set; }
+        public bool IsAvailable { get; set; } = true;
     }
 }

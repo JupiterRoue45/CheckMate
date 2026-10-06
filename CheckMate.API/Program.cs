@@ -1,13 +1,16 @@
 using CheckMate.API.ExceptionHandlers;
 using CheckMate.API.Middlewares;
+using CheckMate.API.Filters;
 using CheckMate.Application.Interfaces;
 using CheckMate.Application.Services;
+using CheckMate.Application.Validators.Room;
 using CheckMate.Infrastructure.Configurations;
 using CheckMate.Infrastructure.Identity;
 using CheckMate.Infrastructure.Persistence;
 using CheckMate.Infrastructure.Persistence.SeedData;
 using CheckMate.Infrastructure.Repositories.Implementations;
 using CheckMate.Infrastructure.Repositories.Interfaces;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -52,10 +55,23 @@ builder.Services.
     .AddRoles<Role>()
     .AddEntityFrameworkStores<CheckMateDbContext>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidationFilter>();
+
+    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+});
+
+#region FluentValidation
+
+
+
+#endregion
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddValidatorsFromAssemblyContaining<RoomRegistrationValidator>();
 #region Exceptions
 
 builder.Services.AddProblemDetails(options =>
@@ -87,11 +103,17 @@ builder.Services.AddTransient<CorrelationMiddleware>();
 # region reporitories
 builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 #endregion
 
 #region application
 builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
+builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<IServiceDeliveryService, ServiceDeliveryService>();
 #endregion
 
 var jwtSection = builder.Configuration.GetSection("JwtSettings");
@@ -149,6 +171,8 @@ app.UseMiddleware<CorrelationMiddleware>();
 app.UseSerilogRequestLogging();
 
 app.UseExceptionHandler();
+
+app.UseStatusCodePages();
 
 app.UseHttpsRedirection();
 
