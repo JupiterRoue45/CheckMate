@@ -11,8 +11,6 @@ namespace CheckMate.Domain.Entities
 
         public string LastName { get; set; }
 
-        public DateOnly? BirthDate { get; set; }
-
         public bool IsAdult { get; set; }
 
     }

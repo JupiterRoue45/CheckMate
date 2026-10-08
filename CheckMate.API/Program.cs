@@ -107,6 +107,7 @@ builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 #endregion
 
 #region application
@@ -115,6 +116,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IServiceDeliveryService, ServiceDeliveryService>();
+builder.Services.AddScoped<IPersonService, PersonService>();
 #endregion
 
 var jwtSection = builder.Configuration.GetSection("JwtSettings");

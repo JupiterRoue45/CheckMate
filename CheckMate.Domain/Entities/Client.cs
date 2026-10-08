@@ -9,7 +9,7 @@ namespace CheckMate.Domain.Entities
     {
         public int ClientId { get; set; }
 
-        public DateTime CreationAt { get; set; }
+        public DateTime CreationAt { get; set; } = DateTime.UtcNow;
 
         public int? AddressId { get; set; }
 

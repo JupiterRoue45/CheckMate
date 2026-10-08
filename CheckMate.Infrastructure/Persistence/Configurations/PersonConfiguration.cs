@@ -21,9 +21,6 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                 .HasMaxLength(50)
                 .IsRequired();
 
-            builder.Property(p => p.BirthDate)
-                .IsRequired(false);
-
             builder.Property(p => p.IsAdult)
                 .HasDefaultValue(true)
                 .IsRequired();
