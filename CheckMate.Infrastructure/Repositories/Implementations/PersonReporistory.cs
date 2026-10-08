@@ -24,7 +24,7 @@ namespace CheckMate.Infrastructure.Repositories.Implementations
 
         public async Task<IEnumerable<Person>> GetAllAsync()
         {
-            return await _context.Persons.ToListAsync();
+            return await _context.Persons.AsNoTracking().ToListAsync();
         }
 
         public async Task<Person?> GetByIdAsync(int Id)

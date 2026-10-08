@@ -8,5 +8,7 @@ namespace CheckMate.Infrastructure.Repositories.Interfaces
     public interface ICountryRepository
     {
         Task<IEnumerable<Country>> GetAllCountries();
+
+        Task<bool> VerifyCountryExistance(int id);
     }
 }

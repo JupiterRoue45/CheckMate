@@ -23,5 +23,10 @@ namespace CheckMate.Infrastructure.Repositories.Implementations
                 .AsNoTrackingWithIdentityResolution()
                 .ToListAsync() ;
         }
+
+        public async Task<bool> VerifyCountryExistance(int id)
+        {
+            return await _context.Countries.AnyAsync(c => c.CountryId == id);
+        }
     }
 }

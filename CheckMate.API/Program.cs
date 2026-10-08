@@ -115,6 +115,7 @@ builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 #endregion
 
 #region application
@@ -126,6 +127,7 @@ builder.Services.AddScoped<IServiceDeliveryService, ServiceDeliveryService>();
 builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
 #endregion
 
 var jwtSection = builder.Configuration.GetSection("JwtSettings");
