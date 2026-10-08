@@ -1,4 +1,5 @@
 ﻿using CheckMate.Application.Common.Results;
+using CheckMate.Application.DTOs.Client;
 using CheckMate.Application.DTOs.Person;
 using CheckMate.Domain.Entities;
 using System;
@@ -9,9 +10,9 @@ namespace CheckMate.Application.Interfaces
 {
     public interface IPersonService
     {
-        Task<Result<Person>> GetPersonByIdAsync(int Id);
+        Task<Result<ClientDto>> GetPersonByIdAsync(int Id);
 
-        Task<IEnumerable<Person>> ListAllPersonsAsync();
+        Task<IEnumerable<ClientDto>> ListAllPersonsAsync();
 
         Task<Result<Person>> CreatePersonAsync(PersonCreationDto dto);
     }

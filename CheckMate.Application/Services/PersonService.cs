@@ -1,6 +1,8 @@
 ﻿using CheckMate.Application.Common.Results;
+using CheckMate.Application.DTOs.Client;
 using CheckMate.Application.DTOs.Person;
 using CheckMate.Application.Errors.Person;
+using CheckMate.Application.Helpers;
 using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
 using CheckMate.Infrastructure.Persistence;
@@ -42,20 +44,21 @@ namespace CheckMate.Application.Services
             return Result<Person>.Success(person);
         }
 
-        public async Task<Result<Person>> GetPersonByIdAsync(int Id)
+        public async Task<Result<ClientDto>> GetPersonByIdAsync(int Id)
         {
             Person? person = await _personRepository.GetByIdAsync(Id);
 
             if (person == null)
             {
-                return Result<Person>.Failure(PersonErrors.PersonNotFound(Id));
+                return Result<ClientDto>.Failure(PersonErrors.PersonNotFound(Id));
             }
-            return Result<Person>.Success(person);
+            return Result<ClientDto>.Success(person.ToDto());
         }
 
-        public async Task<IEnumerable<Person>> ListAllPersonsAsync()
+        public async Task<IEnumerable<ClientDto>> ListAllPersonsAsync()
         {
-            return await _personRepository.GetAllAsync();
+            IEnumerable<Person> persons = await _personRepository.GetAllAsync();
+            return persons.Select(p => p.ToDto());
         }
     }
 }

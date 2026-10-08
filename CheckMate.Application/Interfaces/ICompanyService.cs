@@ -1,4 +1,6 @@
 ﻿using CheckMate.Application.Common.Results;
+using CheckMate.Application.DTOs.Client;
+using CheckMate.Application.DTOs.Company;
 using CheckMate.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,10 +10,10 @@ namespace CheckMate.Application.Interfaces
 {
     public interface ICompanyService
     {
-        Task<Result<Company>> GetCompanyByIdAsync(int Id);
+        Task<Result<ClientDto>> GetCompanyByIdAsync(int Id);
 
-        Task<IEnumerable<Company>> ListAllCompaniesAsync();
+        Task<IEnumerable<ClientDto>> ListAllCompaniesAsync();
 
-        Task<Result<Company>> CreateCompanyAsync();
+        Task<Result<Company>> CreateCompanyAsync(CompanyCreationDto dto);
     }
 }
