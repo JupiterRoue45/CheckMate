@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,8 +59,12 @@ builder.Services.
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ValidationFilter>();
-
     options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+})
+.AddJsonOptions(jsonOptions =>
+{
+    jsonOptions.JsonSerializerOptions.Converters.Add(
+        new JsonStringEnumConverter(allowIntegerValues: false));
 });
 
 #region FluentValidation

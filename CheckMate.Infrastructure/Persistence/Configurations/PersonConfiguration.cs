@@ -25,6 +25,11 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                 .HasDefaultValue(true)
                 .IsRequired();
 
+            builder.Property(p => p.Gender)
+                .HasConversion<string>()
+                .HasMaxLength(10)
+                .IsRequired();
+
         }
     }
 }

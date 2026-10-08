@@ -31,7 +31,8 @@ namespace CheckMate.Application.Services
                 IsAdult = dto.IsAdult.Value,
                 PhoneAreaCode = dto.PhoneAreaCode,
                 PhoneNumber = dto.PhoneNumber,
-                Email = dto.Email
+                Email = dto.Email,
+                Gender = dto.Gender.Value
             };
 
             await _personRepository.CreateAsync(person);

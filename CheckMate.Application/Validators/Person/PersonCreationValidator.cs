@@ -33,6 +33,10 @@ namespace CheckMate.Application.Validators.Person
                 .EmailAddress()
                 .WithMessage("Invalid email address format.")
                 .When(x => !string.IsNullOrEmpty(x.Email));
+
+            RuleFor(x => x.Gender)
+                .IsInEnum().WithMessage("Invalid gender value.")
+                .NotNull().WithMessage("Gender field is required.");
         }
     }
 }
