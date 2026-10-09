@@ -26,6 +26,8 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
             builder.Property(a => a.AddressLabel)
                 .HasMaxLength(50)
                 .IsRequired();
+            builder.HasIndex(a => a.AddressLabel)
+                .IsUnique();
 
             builder.Property(a => a.City)
                 .HasMaxLength(50)

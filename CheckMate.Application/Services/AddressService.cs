@@ -72,7 +72,7 @@ namespace CheckMate.Application.Services
             return await _addressRepository.GetByLabelAsync(label);
         }
 
-        public async Task<IEnumerable<Address>> GetAllAddressed()
+        public async Task<IEnumerable<Address>> GetAllAddresses()
         {
             return await _addressRepository.GetAllAsync();
         }

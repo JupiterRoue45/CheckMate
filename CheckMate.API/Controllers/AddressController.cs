@@ -3,6 +3,7 @@ using CheckMate.Application.Common.Results;
 using CheckMate.Application.DTOs.Address;
 using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(AddressCreationDto requestDto)
         {
             Result<Address> result = await _addressService.CreateAddressAsync(requestDto);
@@ -35,6 +37,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> Get(int id)
         {
             Result<Address> result = await _addressService.GetAddressByIdAsync(id);
@@ -50,6 +53,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpGet("search")]
+        [Authorize]
         public async Task<IActionResult> Search([FromQuery] string label)
         {
             IEnumerable<Address> addresses = await _addressService.GetAddressesByLabel(label);
@@ -58,6 +62,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             Result result = await _addressService.DeleteAddressAsync(id);
@@ -73,6 +78,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> Update(int id, AddressUpdateDto dto)
         {
             Result<Address> result = await _addressService.UpdateAddressAsync(id, dto);
@@ -84,6 +90,15 @@ namespace CheckMate.API.Controllers
             {
                 return result.Error.Value.ToActionResult(this);
             }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetAll()
+        {
+            IEnumerable<Address> addresses = await _addressService.GetAllAddresses();
+
+            return Ok(addresses);
         }
     }
 }

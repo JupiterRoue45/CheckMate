@@ -15,7 +15,7 @@ namespace CheckMate.Application.Interfaces
 
         Task<IEnumerable<Address>> GetAddressesByLabel(string label);
 
-        Task<IEnumerable<Address>> GetAllAddressed();
+        Task<IEnumerable<Address>> GetAllAddresses();
 
         Task<Result> DeleteAddressAsync(int id);
 
