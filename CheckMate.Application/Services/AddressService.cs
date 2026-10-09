@@ -29,6 +29,9 @@ namespace CheckMate.Application.Services
             if (!await _countryRepository.VerifyCountryExistance(dto.CountryId.Value))
                 return Result<Address>.Failure(AddressErrors.InexistantCountry());
 
+            if (await _addressRepository.VerifyLabelExistance(dto.Label))
+                return Result<Address>.Failure(AddressErrors.LabelAlreadyUsed(dto.Label));
+
             Address address = new()
             {
                 StreetName = dto.Street,
@@ -88,6 +91,10 @@ namespace CheckMate.Application.Services
 
             if (address is null)
                 return Result<Address>.Failure(AddressErrors.AddressNotFound(id));
+
+            if (address.AddressLabel != dto.Label
+                && await _addressRepository.VerifyLabelExistance(dto.Label))
+                return Result<Address>.Failure(AddressErrors.LabelAlreadyUsed(dto.Label));
 
             address.AddressLabel = dto.Label;
             address.StreetName = dto.Street;

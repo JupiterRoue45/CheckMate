@@ -51,5 +51,10 @@ namespace CheckMate.Infrastructure.Repositories.Implementations
 
             return false;
         }
+
+        public async Task<bool> VerifyLabelExistance(string label)
+        {
+            return await _context.Addresses.AnyAsync(a => string.Equals(a.AddressLabel, label, StringComparison.OrdinalIgnoreCase));
+        }
     }
 }

@@ -16,5 +16,7 @@ namespace CheckMate.Infrastructure.Repositories.Interfaces
         Task CreateAsync(Address address);
 
         Task<bool> DeleteAsync(int id);
+
+        Task<bool> VerifyLabelExistance(string label);
     }
 }

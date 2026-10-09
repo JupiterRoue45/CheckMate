@@ -20,5 +20,11 @@ namespace CheckMate.Application.Errors.Address
             Message = "The country you are trying to assign to the address does not exist.",
             Type = ErrorTypeEnum.NOT_FOUND
         };
+
+        public static Error LabelAlreadyUsed(string label) => new() { 
+            Code = "Address.LabelAlreadyUsed",
+            Message = $"An address with the label \"{label}\" already exists.",
+            Type = ErrorTypeEnum.CONFLICT
+        };
     }
 }
