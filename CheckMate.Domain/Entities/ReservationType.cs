@@ -13,6 +13,5 @@ namespace CheckMate.Domain.Entities
 
         public string? Description { get; set; }
 
-        public bool FreeCancellation { get; set; }
     }
 }

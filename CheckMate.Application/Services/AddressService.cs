@@ -34,6 +34,8 @@ namespace CheckMate.Application.Services
 
             Address address = new()
             {
+                AddressLabel = dto.Label,
+                AddressNumber = dto.Number,
                 StreetName = dto.Street,
                 City = dto.City,
                 State = dto.State,

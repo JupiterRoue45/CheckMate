@@ -24,10 +24,6 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
             builder.Property(rt => rt.Description)
                 .HasMaxLength(256)
                 .IsRequired(false);
-
-            builder.Property(rt => rt.FreeCancellation)
-                .HasDefaultValue(false)
-                .IsRequired();
         }
     }
 }

@@ -34,6 +34,8 @@ namespace CheckMate.Infrastructure.Persistence
         public DbSet<RoomUnavailability> RoomUnavailabilities => Set<RoomUnavailability>();
         public DbSet<Service> Services => Set<Service>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+        public DbSet<CancellationPolicy> CancellationPolicies => Set<CancellationPolicy>();
+        public DbSet<ComplementaryService> ComplementaryServices => Set<ComplementaryService>();
 
         public CheckMateDbContext(DbContextOptions<CheckMateDbContext> options) : base(options) {
         
