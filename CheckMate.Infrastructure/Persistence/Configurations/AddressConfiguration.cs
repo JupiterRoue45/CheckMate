@@ -24,6 +24,7 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                 .IsRequired();
 
             builder.Property(a => a.AddressLabel)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasMaxLength(50)
                 .IsRequired();
             builder.HasIndex(a => a.AddressLabel)
