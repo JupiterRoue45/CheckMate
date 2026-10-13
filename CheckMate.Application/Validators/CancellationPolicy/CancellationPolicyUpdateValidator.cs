@@ -1,4 +1,4 @@
-﻿using CheckMate.Application.Errors.CancellationPolicy;
+﻿using CheckMate.Application.DTOs.CancellationPolicy;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

@@ -50,7 +50,7 @@ namespace CheckMate.Application.Services
             bool roomTypeExists = await _roomTypeRepository.VerifyRoomTypeExistence(dto.RoomTypeId);
 
             if (!roomTypeExists)
-                return Result<Room>.Failure(RoomErrors.InexistantRoomType(dto.RoomTypeId));
+                return Result<Room>.Failure(RoomTypeErrors.NotFound(dto.RoomTypeId));
 
             // We check if there is no room with the same number
             bool roomNumberExists = await _roomRepository.VerifyRoomExistenceFromRoomNumberAsync(dto.Number);

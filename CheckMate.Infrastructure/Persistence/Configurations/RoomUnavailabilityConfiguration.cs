@@ -37,10 +37,14 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                 .IsRequired();
 
             builder.Property(ru => ru.Comment)
+                .HasMaxLength(256)
                 .IsRequired(false);
 
             builder.Property(ru => ru.CreatedAt)
                 .HasDefaultValueSql("GETUTCDATE()")
+                .IsRequired();
+
+            builder.Property(ru => ru.UserId)
                 .IsRequired();
         }
     }

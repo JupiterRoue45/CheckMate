@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CheckMate.Application.Errors.CancellationPolicy
+namespace CheckMate.Application.DTOs.CancellationPolicy
 {
     public class CancellationPolicyUpdateDto
     {

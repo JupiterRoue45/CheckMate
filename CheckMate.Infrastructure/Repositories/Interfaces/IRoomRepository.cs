@@ -14,5 +14,7 @@ namespace CheckMate.Infrastructure.Repositories.Interfaces
         Task CreateAsync(Room room);
 
         Task<bool> VerifyRoomExistenceFromRoomNumberAsync(string number);
+
+        Task<Room?> GetRoomFromRoomNumberAsync(string number); 
     }
 }

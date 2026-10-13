@@ -35,5 +35,10 @@ namespace CheckMate.Infrastructure.Repositories.Implementations
         {
             return await _context.Rooms.AnyAsync(r => r.RoomNumber == number);
         }
+
+        public async Task<Room?> GetRoomFromRoomNumberAsync(string number)
+        {
+            return await _context.Rooms.FirstOrDefaultAsync(r => r.RoomNumber.Equals(number));
+        }
     }
 }

@@ -37,6 +37,7 @@ builder.Services.
     AddIdentityCore<User>(options =>
     {
         // User
+        options.ClaimsIdentity.UserIdClaimType = JwtRegisteredClaimNames.Sub;
         options.SignIn.RequireConfirmedEmail = false;
         options.User.RequireUniqueEmail = true;
 
@@ -118,6 +119,7 @@ builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 builder.Services.AddScoped<IComplementaryServiceRepository, ComplementaryServiceRepository>();
 builder.Services.AddScoped<ICancellationPolicyRepository, CancellationPolicyRepository>();
+builder.Services.AddScoped<IRoomUnavailabilityRepository, RoomUnavailabilityRepository>();
 #endregion
 
 #region application
@@ -132,6 +134,7 @@ builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<IComplementaryServiceDeliveryService, ComplementaryServiceDeliveryService>();
 builder.Services.AddScoped<ICancellationPolicyService, CancellationPolicyService>();
+builder.Services.AddScoped<IRoomUnavailabilityService, RoomUnavailabilityService>();
 #endregion
 
 var jwtSection = builder.Configuration.GetSection("JwtSettings");

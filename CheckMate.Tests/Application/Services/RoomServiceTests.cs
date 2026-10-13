@@ -1,5 +1,6 @@
 ﻿using CheckMate.Application.DTOs.Room;
 using CheckMate.Application.Errors.Room;
+using CheckMate.Application.Errors.RoomType;
 using CheckMate.Application.Services;
 using CheckMate.Domain.Entities;
 using CheckMate.Infrastructure.Persistence;
@@ -47,7 +48,7 @@ namespace CheckMate.Tests.Application.Services
 
             // Assert
             Assert.False(result.IsSuccess);
-            Assert.Equal(RoomErrors.InexistantRoomType(roomCreationDto.RoomTypeId), result.Error);
+            Assert.Equal(RoomTypeErrors.NotFound(roomCreationDto.RoomTypeId), result.Error);
         }
 
         [Fact]
