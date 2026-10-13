@@ -1,6 +1,7 @@
 ﻿using CheckMate.API.Helpers;
 using CheckMate.Application.Common.Results;
 using CheckMate.Application.DTOs.RoomUnavailability;
+using CheckMate.Application.Errors.RoomUnavailability;
 using CheckMate.Application.Interfaces;
 using CheckMate.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -45,8 +46,11 @@ namespace CheckMate.API.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetUnavailabilitiesBetweenStartAndEnd(DateOnly startingDate, DateOnly endingDate)
+        public async Task<IActionResult> GetUnavailabilitiesBetweenStartAndEnd([FromQuery]DateOnly startingDate, [FromQuery]DateOnly endingDate)
         {
+            if (endingDate <= startingDate)
+                return RoomUnavailabilityErrors.WrongDates().ToActionResult(this);
+
             return Ok(await _roomUnavailabilityService.GetUnavailableRoomsBetweenTwoDates(startingDate, endingDate));
         }
         

@@ -21,7 +21,7 @@ namespace CheckMate.Application.Validators.RoomUnavailability
                 .MaximumLength(256).WithMessage("The Comment field must not exceed 256 characters");
 
             RuleFor(x => x.StartingDate)
-                .GreaterThan(DateOnly.FromDateTime(DateTime.UtcNow)).WithMessage("Can not insert a booking for a previous date.");
+                .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.UtcNow)).WithMessage("Can not insert a booking for a previous date.");
 
             RuleFor(x => x.EndingDate)
                 .GreaterThan(x => x.StartingDate).WithMessage("Impossible to have the checkout date inferior to the check-in date.");
