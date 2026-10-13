@@ -3,6 +3,7 @@ using CheckMate.Application.Common.Results;
 using CheckMate.Application.DTOs.RoomUnavailability;
 using CheckMate.Application.Interfaces;
 using CheckMate.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] RoomUnavailabilityCreationDto requestDto)
         {
             User? user = await _userManager.GetUserAsync(HttpContext.User);
@@ -42,6 +44,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetUnavailabilitiesBetweenStartAndEnd(DateOnly startingDate, DateOnly endingDate)
         {
             return Ok(await _roomUnavailabilityService.GetUnavailableRoomsBetweenTwoDates(startingDate, endingDate));

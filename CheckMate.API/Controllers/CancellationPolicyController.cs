@@ -4,6 +4,7 @@ using CheckMate.Application.DTOs.CancellationPolicy;
 using CheckMate.Application.Errors.CancellationPolicy;
 using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,18 +22,21 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<CancellationPolicy>> GetAll()
         {
             return Ok(await _cancellationPolicyService.GetCancellationPoliciesAsync());
         }
 
         [HttpGet("search")]
+        [Authorize]
         public async Task<ActionResult<CancellationPolicy>> GetByCode([FromQuery] string code)
         {
             return Ok(await _cancellationPolicyService.GetCancellationPoliciesByCodeAsync(code));
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] CancellationPolicyCreationDto requestDto)
         {
             Result<CancellationPolicy> result = await _cancellationPolicyService.CreateCancellationPolicyAsync(requestDto);
@@ -44,6 +48,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> Update(int id, [FromBody] CancellationPolicyUpdateDto requestDto)
         {
             Result<CancellationPolicy> result = await _cancellationPolicyService.UpdateCancellationPolicyAsync(id, requestDto);
@@ -55,6 +60,7 @@ namespace CheckMate.API.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> Get(int id)
         {
             Result<CancellationPolicy> result = await _cancellationPolicyService.GetCancellationPolicyByIdAsync(id);
