@@ -1,4 +1,6 @@
 ﻿using CheckMate.Application.Common.Results;
+using CheckMate.Application.DTOs.CancellationPolicy;
+using CheckMate.Application.Errors.CancellationPolicy;
 using CheckMate.Application.Interfaces;
 using CheckMate.Domain.Entities;
 using CheckMate.Infrastructure.Persistence;
@@ -22,7 +24,26 @@ namespace CheckMate.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Task<Result<CancellationPolicy>> CreateCancellationPolicyAsync()
+        public async Task<Result<CancellationPolicy>> CreateCancellationPolicyAsync(CancellationPolicyCreationDto dto)
+        {
+            if (await _cancellationPolicyRepository.VerifyExistenceOfCode(dto.Code))
+                return Result<CancellationPolicy>.Failure(CancellationPolicyErrors.CodeAlreadyExists(dto.Code));
+
+            CancellationPolicy cancellationPolicy = new()
+            {
+                Code = dto.Code,
+                Description = dto.Description,
+                DeadlineHours = dto.DeadlineHours
+            };
+
+            await _cancellationPolicyRepository.CreateAsync(cancellationPolicy);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return Result<CancellationPolicy>.Success(cancellationPolicy);
+        }
+
+        public Task<Result> DeleteCancellationPolicyAsync(int id)
         {
             throw new NotImplementedException();
         }
@@ -35,6 +56,36 @@ namespace CheckMate.Application.Services
         public async Task<IEnumerable<CancellationPolicy>> GetCancellationPoliciesByCodeAsync(string code)
         {
             return await _cancellationPolicyRepository.GetCancellationPoliciesByCodeAsync(code);
+        }
+
+        public async Task<Result<CancellationPolicy>> GetCancellationPolicyByIdAsync(int id)
+        {
+            CancellationPolicy? cancellationPolicy = await _cancellationPolicyRepository.GetAsync(id);
+
+            if (cancellationPolicy is null)
+                return Result<CancellationPolicy>.Failure(CancellationPolicyErrors.CancellationPolicyNotFound(id));
+            else
+                return Result<CancellationPolicy>.Success(cancellationPolicy);
+        }
+
+        public async Task<Result<CancellationPolicy>> UpdateCancellationPolicyAsync(int id, CancellationPolicyUpdateDto dto)
+        {
+            CancellationPolicy? cancellationPolicy = await _cancellationPolicyRepository.GetAsync(id);
+
+            if (cancellationPolicy is null)
+                return Result<CancellationPolicy>.Failure(CancellationPolicyErrors.CancellationPolicyNotFound(id));
+
+            if (cancellationPolicy.Code != dto.Code
+                && await _cancellationPolicyRepository.VerifyExistenceOfCode(dto.Code))
+                return Result<CancellationPolicy>.Failure(CancellationPolicyErrors.CodeAlreadyExists(dto.Code));
+
+            cancellationPolicy.Code = dto.Code;
+            cancellationPolicy.DeadlineHours = dto.DeadlineHours;
+            cancellationPolicy.Description = dto.Description;
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return Result<CancellationPolicy>.Success(cancellationPolicy);
         }
     }
 }

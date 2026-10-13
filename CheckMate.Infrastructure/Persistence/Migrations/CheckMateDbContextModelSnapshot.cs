@@ -1936,6 +1936,11 @@ namespace CheckMate.Infrastructure.Persistence.Migrations
                     b.Property<DateOnly>("DepartureDate")
                         .HasColumnType("date");
 
+                    b.Property<string>("ReservationNumber")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("ReservationStatus")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
@@ -1949,9 +1954,16 @@ namespace CheckMate.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Voucher")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.HasKey("ReservationId");
 
                     b.HasIndex("BookerId");
+
+                    b.HasIndex("ReservationNumber")
+                        .IsUnique();
 
                     b.HasIndex("ReservationTypeId");
 
@@ -1970,6 +1982,9 @@ namespace CheckMate.Infrastructure.Persistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationRoomId"));
+
+                    b.Property<int>("CancellationPolicyId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("CheckedInAt")
                         .HasColumnType("datetime2");
@@ -2011,6 +2026,8 @@ namespace CheckMate.Infrastructure.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ReservationRoomId");
+
+                    b.HasIndex("CancellationPolicyId");
 
                     b.HasIndex("ReservationId");
 
@@ -2743,6 +2760,12 @@ namespace CheckMate.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("CheckMate.Domain.Entities.ReservationRoom", b =>
                 {
+                    b.HasOne("CheckMate.Domain.Entities.CancellationPolicy", "CancellationPolicy")
+                        .WithMany()
+                        .HasForeignKey("CancellationPolicyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("CheckMate.Domain.Entities.Reservation", "Reservation")
                         .WithMany()
                         .HasForeignKey("ReservationId")
@@ -2759,6 +2782,8 @@ namespace CheckMate.Infrastructure.Persistence.Migrations
                         .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("CancellationPolicy");
 
                     b.Navigation("Reservation");
 

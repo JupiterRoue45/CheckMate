@@ -116,6 +116,8 @@ builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<IComplementaryServiceRepository, ComplementaryServiceRepository>();
+builder.Services.AddScoped<ICancellationPolicyRepository, CancellationPolicyRepository>();
 #endregion
 
 #region application
@@ -128,6 +130,8 @@ builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<IComplementaryServiceDeliveryService, ComplementaryServiceDeliveryService>();
+builder.Services.AddScoped<ICancellationPolicyService, CancellationPolicyService>();
 #endregion
 
 var jwtSection = builder.Configuration.GetSection("JwtSettings");

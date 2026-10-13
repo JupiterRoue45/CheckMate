@@ -55,6 +55,15 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                 .HasDefaultValueSql("GETUTCDATE()")
                 .IsRequired();
 
+            builder.Property(r => r.Voucher)
+                .HasMaxLength(50)
+                .IsRequired(false);
+
+            builder.Property(r => r.ReservationNumber)
+                .HasMaxLength(100)
+                .IsRequired();
+            builder.HasIndex(r => r.ReservationNumber)
+                .IsUnique();
         }
     }
 }

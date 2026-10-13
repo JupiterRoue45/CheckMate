@@ -35,5 +35,15 @@ namespace CheckMate.Infrastructure.Repositories.Implementations
                 .AsNoTracking()
                 .ToListAsync();
         }
+
+        public async Task<bool> VerifyExistenceOfCode(string code)
+        {
+            return await _context.CancellationPolicies.AnyAsync(cp => cp.Code == code);
+        }
+
+        public async Task<CancellationPolicy?> GetAsync(int id)
+        {
+            return await _context.CancellationPolicies.FirstOrDefaultAsync(cp => cp.cancellationPolicyId == id);
+        }
     }
 }

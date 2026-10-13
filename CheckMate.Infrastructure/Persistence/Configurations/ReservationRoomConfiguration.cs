@@ -73,6 +73,12 @@ namespace CheckMate.Infrastructure.Persistence.Configurations
                 .HasDefaultValue(0)
                 .IsRequired();
 
+            builder.HasOne(rr => rr.CancellationPolicy)
+                .WithMany()
+                .HasForeignKey(rr => rr.CancellationPolicyId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
+
             builder.Ignore(rr => rr.IsOccupied);
         }
     }

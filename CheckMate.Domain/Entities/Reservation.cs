@@ -24,6 +24,9 @@ namespace CheckMate.Domain.Entities
         public int BookerId { get; set; }
         public Client Booker { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public string? Voucher;
+        public string ReservationNumber;
     }
 }

@@ -10,5 +10,7 @@ namespace CheckMate.Infrastructure.Repositories.Interfaces
         Task CreateAsync(CancellationPolicy cancellationPolicy);
         Task<IEnumerable<CancellationPolicy>> GetAllAsync();
         Task<IEnumerable<CancellationPolicy>> GetCancellationPoliciesByCodeAsync(string code);
+        Task<bool> VerifyExistenceOfCode(string code);
+        Task<CancellationPolicy?> GetAsync(int id);
     }
 }

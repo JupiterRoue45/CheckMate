@@ -34,6 +34,9 @@ namespace CheckMate.Domain.Entities
 
         public ICollection<OngoingInvoice> OngoingInvoices { get; } = [];
 
+        public int CancellationPolicyId { get; set; }
+        public CancellationPolicy CancellationPolicy { get; set; }
+
         public bool IsOccupied => 
             RoomId.HasValue && 
             CheckedInAt.HasValue && 
