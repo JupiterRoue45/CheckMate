@@ -10,5 +10,7 @@ namespace CheckMate.Infrastructure.Repositories.Interfaces
         Task<IEnumerable<Country>> GetAllCountries();
 
         Task<bool> VerifyCountryExistance(int id);
+
+        Task<bool> VerifyPhoneAreaCodeExistence(string code);
     }
 }

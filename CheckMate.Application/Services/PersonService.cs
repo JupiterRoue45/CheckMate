@@ -1,6 +1,7 @@
 ﻿using CheckMate.Application.Common.Results;
 using CheckMate.Application.DTOs.Client;
 using CheckMate.Application.DTOs.Person;
+using CheckMate.Application.Errors.Client;
 using CheckMate.Application.Errors.Person;
 using CheckMate.Application.Helpers;
 using CheckMate.Application.Interfaces;
@@ -17,15 +18,27 @@ namespace CheckMate.Application.Services
     {
         private readonly IPersonRepository _personRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICountryRepository _countryRepository;
 
-        public PersonService(IPersonRepository personRepository, IUnitOfWork unitOfWork)
+        public PersonService(IPersonRepository personRepository,
+            IUnitOfWork unitOfWork,
+            ICountryRepository countryRepository    )
         {
             _personRepository = personRepository;
             _unitOfWork = unitOfWork;
+            _countryRepository = countryRepository;
         }
 
         public async Task<Result<Person>> CreatePersonAsync(PersonCreationDto dto)
         {
+            bool codeExists = true;
+
+            if (!string.IsNullOrEmpty(dto.PhoneAreaCode))
+                codeExists = await _countryRepository.VerifyPhoneAreaCodeExistence(dto.PhoneAreaCode);
+
+            if (!codeExists)
+                return Result<Person>.Failure(ClientErrors.InexistantPhoneAreaCode(dto.PhoneAreaCode));
+
             Person person = new()
             {
                 FirstName = dto.FirstName,

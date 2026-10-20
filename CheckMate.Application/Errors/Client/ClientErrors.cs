@@ -13,5 +13,12 @@ namespace CheckMate.Application.Errors.Client
             Message = $"Client with ID {id} not found.",
             Type = ErrorTypeEnum.NOT_FOUND
         };
+
+        public static Error InexistantPhoneAreaCode(string code) => new()
+        {
+            Code = "Client.InexistantPhoneAreaCode",
+            Message = $"The dialing code \"{code}\" does not exist",
+            Type = ErrorTypeEnum.NOT_FOUND
+        };
     }
 }

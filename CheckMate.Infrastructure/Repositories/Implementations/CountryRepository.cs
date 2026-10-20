@@ -28,5 +28,17 @@ namespace CheckMate.Infrastructure.Repositories.Implementations
         {
             return await _context.Countries.AnyAsync(c => c.CountryId == id);
         }
+
+        public async Task<bool> VerifyPhoneAreaCodeExistence(string code)
+        {
+            IList<String> codes = await _context.Countries
+                .AsNoTracking()
+                .Select(c => c.PhoneDialCode)
+                .ToListAsync();
+
+            return codes
+                .Select(c => c.Split(',', StringSplitOptions.TrimEntries))
+                .Any(c => c.Contains(code));
+        }
     }
 }
