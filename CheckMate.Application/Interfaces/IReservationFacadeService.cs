@@ -1,0 +1,11 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace CheckMate.Application.Interfaces
+{
+    public interface IReservationFacadeService
+    {
+
+    }
+}
